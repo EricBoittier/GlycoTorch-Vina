@@ -1,0 +1,110 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Disacharide with 4c1 and 1c4",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/eric/Desktop/VC_1_0/autodock_vina_1_1_2/build/linux/release/vina-carb",
+            "args": ["--receptor",
+                "/home/eric/Desktop/VC_1_0/debug/_2BRS_WithoutLigands.pdb.pdbqt",
+                "--ligand",
+                "/home/eric/Desktop/VC_1_0/debug/_2BRS_LIGAND_1_uncharged.pdb.mol2.pdbqt",
+                "--config",
+                "/home/eric/Desktop/VC_1_0/debug/2BRS_LIGAND_1.pdb.conf",
+                "--chi_coeff",
+                "1",
+                "--chi_cutoff",
+                "0",
+                // "--cpu", ""
+            ]
+                ,
+            "stopAtEntry": false,
+            "cwd": "/home/eric/Desktop/VC_1_0/autodock_vina_1_1_2/build",
+            "environment": [{ "name": "VINA_CARB", 
+                "value": "/home/eric/Documents/Docking/docking_vina_carb/VC_1_0" } ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": false
+                }
+            ]
+        },
+
+        {
+            "name": "Contains 2sO",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/eric/Desktop/VC_1_0/autodock_vina_1_1_2/build/linux/release/vina-carb",
+            "args": ["--receptor",
+                "/home/eric/Desktop/VC_1_0/debug/_3B9F_WithoutLigands.pdb.pdbqt",
+                "--ligand",
+                "/home/eric/Desktop/VC_1_0/debug/_3B9F_LIGAND_1_uncharged.pdb.mol2.pdbqt",
+                "--config",
+                "/home/eric/Desktop/VC_1_0/debug/3B9F_LIGAND_1.pdb.conf",
+                "--chi_coeff",
+                "1",
+                "--chi_cutoff",
+                "0",
+                // "--cpu", ""
+            ]
+                ,
+            "stopAtEntry": false,
+            "cwd": "/home/eric/Desktop/VC_1_0/autodock_vina_1_1_2/build",
+            "environment": [{ "name": "VINA_CARB", 
+                "value": "/home/eric/Documents/Docking/docking_vina_carb/VC_1_0" } ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": false
+                }
+            ]
+        },
+
+        {
+
+            "name": "tetrasacharide with 4c1 and 1c4",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/eric/Desktop/VC_1_0/autodock_vina_1_1_2/build/linux/release/vina-carb",
+            "args": ["--receptor",
+                "/home/eric/Desktop/VC_1_0/debug/_1AXM_WithoutLigands.pdb.pdbqt",
+                "--ligand",
+                "/home/eric/Desktop/VC_1_0/debug/_1AXM_LIGAND_1_uncharged.pdb.mol2.pdbqt",
+                "--config",
+                "/home/eric/Desktop/VC_1_0/debug/1AXM_LIGAND_1.pdb.conf",
+                "--chi_coeff",
+                "1",
+                "--chi_cutoff",
+                "0",
+                // "--cpu", ""
+            ]
+                ,
+                "stopAtEntry": false,
+                "cwd": "/home/eric/Desktop/VC_1_0/autodock_vina_1_1_2/build",
+                "environment": [{ "name": "VINA_CARB", 
+                    "value": "/home/eric/Documents/Docking/docking_vina_carb/VC_1_0" } ],
+                "externalConsole": false,
+                "MIMode": "gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": false
+                    }
+                ]
+
+        }
+
+
+    ]
+}

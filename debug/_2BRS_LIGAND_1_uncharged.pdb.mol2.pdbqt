@@ -1,0 +1,86 @@
+REMARK  14 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C5_1  and  C6_23 
+REMARK    2  A    between atoms: S2_5  and  O6_7 
+REMARK    3  A    between atoms: O1_6  and  C1_35 
+REMARK    4  A    between atoms: O6_7  and  C6_21 
+REMARK    5  A    between atoms: O2_9  and  C2_28 
+REMARK    6  A    between atoms: O2_9  and  S_13 
+REMARK    7  A    between atoms: C3_10  and  O3_20 
+REMARK    8  A    between atoms: C1_11  and  O4_12 
+REMARK    9  A    between atoms: O4_12  and  C4_19 
+REMARK   10  A    between atoms: C2_15  and  N_29 
+REMARK   11  A    between atoms: C5_17  and  C6_21 
+REMARK   12  A    between atoms: C6_23  and  O61_33 
+REMARK   13  A    between atoms: O3_24  and  C3_26 
+REMARK   14  A    between atoms: S1_27  and  N_29 
+ROOT
+ATOM      1  O5  SGN d5702      64.286  37.100  38.475  0.00  0.00    -0.350 OA
+ATOM      2  C2  SGN d5702      62.888  38.624  39.694  0.00  0.00     0.160 C 
+ATOM      3  C5  SGN d5702      64.412  37.972  37.378  0.00  0.00     0.181 C 
+ATOM      4  C4  SGN d5702      64.270  39.426  37.871  0.00  0.00     0.186 C 
+ATOM      5  C3  SGN d5702      62.867  39.567  38.520  0.00  0.00     0.173 C 
+ATOM      6  C1  SGN d5702      63.068  37.194  39.219  0.00  0.00     0.278 C 
+ENDROOT
+BRANCH   4   7
+ATOM      7  O4  SGN d5702      64.425  40.270  36.697  0.00  0.00    -0.348 OA
+BRANCH   7   8
+ATOM      8  C1  IDU d1623      63.667  41.421  36.387  0.00  0.00     0.294 C 
+ATOM      9  O5  IDU d1623      63.763  42.474  37.400  0.00  0.00    -0.343 OA
+ATOM     10  C5  IDU d1623      62.878  43.623  37.150  0.00  0.00     0.224 C 
+ATOM     11  C4  IDU d1623      63.266  44.265  35.808  0.00  0.00     0.077 C 
+ATOM     12  C3  IDU d1623      63.172  43.217  34.688  0.00  0.00     0.156 C 
+ATOM     13  C2  IDU d1623      64.105  42.053  35.056  0.00  0.00     0.228 C 
+BRANCH  10  14
+ATOM     14  C6  IDU d1623      63.013  44.665  38.227  0.00  0.00     0.170 C 
+ATOM     15  O62 IDU d1623      63.810  44.450  39.153  0.00  0.00    -0.648 OA
+BRANCH  14  16
+ATOM     16  O61 IDU d1623      62.312  45.693  38.131  0.00  0.00    -0.774 OA
+ENDBRANCH  14  16
+ENDBRANCH  10  14
+BRANCH  12  18
+ATOM     18  O3  IDU d1623      61.852  42.761  34.584  0.00  0.00    -0.393 OA
+ATOM     19  H   IDU d1623      61.576  42.375  35.430  0.00  0.00     0.210 HD
+ENDBRANCH  12  18
+BRANCH  13  20
+ATOM     20  O2  IDU d1623      65.419  42.530  35.224  0.00  0.00    -0.244 OA
+BRANCH  20  21
+ATOM     21  S   IDU d1623      66.315  42.973  33.809  0.00  0.00     0.252 S 
+ATOM     22  O3S IDU d1623      66.361  41.898  32.890  0.00  0.00    -0.572 OA
+ATOM     23  O1S IDU d1623      67.606  43.402  34.256  0.00  0.00    -0.572 OA
+ATOM     24  O2S IDU d1623      65.666  44.071  33.109  0.00  0.00    -0.572 OA
+ENDBRANCH  20  21
+ENDBRANCH  13  20
+ENDBRANCH   7   8
+ENDBRANCH   4   7
+BRANCH   3  25
+ATOM     25  C6  SGN d5702      65.750  37.713  36.759  0.00  0.00     0.227 C 
+BRANCH  25  26
+ATOM     26  O6  SGN d5702      65.587  38.165  35.423  0.00  0.00    -0.254 OA
+BRANCH  26  27
+ATOM     27  S2  SGN d5702      66.458  37.359  34.163  0.00  0.00     0.251 S 
+ATOM     28  O4S SGN d5702      65.804  37.506  32.903  0.00  0.00    -0.572 OA
+ATOM     29  O5S SGN d5702      66.543  35.964  34.490  0.00  0.00    -0.572 OA
+ATOM     30  O6S SGN d5702      67.736  38.007  34.114  0.00  0.00    -0.572 OA
+ENDBRANCH  26  27
+ENDBRANCH  25  26
+ENDBRANCH   3  25
+BRANCH   5  31
+ATOM     31  O3  SGN d5702      62.692  40.878  39.000  0.00  0.00    -0.391 OA
+ATOM     32  H   SGN d5702      61.814  40.960  39.404  0.00  0.00     0.210 HD
+ENDBRANCH   5  31
+BRANCH   2  33
+ATOM     33  N   SGN d5702      61.652  38.688  40.402  0.00  0.00    -0.189 NA
+ATOM     34  H   SGN d5702      61.079  37.886  40.138  0.00  0.00     0.143 HD
+BRANCH  33  35
+ATOM     35  S1  SGN d5702      61.891  38.667  42.152  0.00  0.00     0.183 S 
+ATOM     36  O1S SGN d5702      62.769  37.562  42.482  0.00  0.00    -0.582 OA
+ATOM     37  O2S SGN d5702      60.636  38.422  42.784  0.00  0.00    -0.582 OA
+ATOM     38  O3S SGN d5702      62.442  39.969  42.476  0.00  0.00    -0.582 OA
+ENDBRANCH  33  35
+ENDBRANCH   2  33
+BRANCH   6  39
+ATOM     39  O1  SGN d5702      61.982  36.738  38.448  0.00  0.00    -0.369 OA
+ATOM     40  H   SGN d5702      62.145  35.823  38.170  0.00  0.00     0.212 HD
+ENDBRANCH   6  39
+TORSDOF 14

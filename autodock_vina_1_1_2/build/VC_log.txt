@@ -1,0 +1,4 @@
+CHI energy penalties applied to IDS 504  and SGN 503  linkage.
+CHI energy penalties applied to SGN 503  and IDS 502  linkage.
+CHI energy penalties applied to IDS 504  and SGN 505  linkage.
+CHI energy penalties applied to SGN 505  and IDS 506  linkage.

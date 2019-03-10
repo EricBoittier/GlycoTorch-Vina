@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/eric/Desktop/VC_1_0/autodock_vina_1_1_2/src",
+                "/home/eric/Desktop/VC_1_0/autodock_vina_1_1_2/src/lib/glylib/inc/",
+                "/home/eric/Desktop/VC_1_0/autodock_vina_1_1_2/src/lib/"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
