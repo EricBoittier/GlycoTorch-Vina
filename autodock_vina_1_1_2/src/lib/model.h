@@ -136,9 +136,37 @@ struct model {
 	double psi_2A3E_energy(double psi_angle);
 	double psi_2E3A_energy(double psi_angle);
 	double psi_6A_energy(double psi_angle);
-        double psi_6E_energy(double psi_angle);
-        double omega_6A_energy(double omega_angle);
-        double omega_6E_energy(double omega_angle);
+	double psi_6E_energy(double psi_angle);
+	double omega_6A_energy(double omega_angle);
+	double omega_6E_energy(double omega_angle);
+
+	///// GlycoTorch Energy Equations (START)
+
+	double energy_2SO_1_e4_D_PHI(double angle);
+	double energy_2SO_1_e4_D_PSI(double angle);
+
+	double energy_D_a1_4_2SO_PHI(double angle);
+	double energy_D_a1_4_2SO_PSI(double angle);
+
+	double energy_L_a1_e4_D_PHI(double angle);
+	double energy_L_a1_e4_D_PSI(double angle);
+
+	double energy_D_1a_4a_L_PHI(double angle);
+	double energy_D_1a_4a_L_PSI(double angle);
+
+	double energy_4c1_a1_a4_4c1_PHI(double angle);
+	double energy_4c1_a1_a4_4c1_PSI(double angle);
+
+	double energy_4c1_b1_e3_4c1_PHI(double angle);
+	double energy_4c1_b1_e3_4c1_PSI(double angle);
+
+	double energy_4c1_b1_4e_4c1_PHI(double angle);
+	double energy_4c1_b1_4e_4c1_PSI(double angle);
+
+
+	///// GlycoTorch Energy Equations (END)
+
+
 
 	fl eval_deriv(const precalculate& p, const igrid& ig, const vec& v, const conf& c, change& g, const fl chi_coeff, const fl chi_cutoff);
 

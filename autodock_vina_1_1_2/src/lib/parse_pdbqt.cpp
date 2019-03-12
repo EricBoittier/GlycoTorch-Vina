@@ -278,25 +278,20 @@ phi = p.k * 180/PI ;
 theta = p.j  * 180/PI;
 q = p.i;
 
-std::cout  << "Phi: " << phi << " Theta: " << theta << " Q: " << q << " Ring: ";
-
-
 if (theta < 40.00) {
-	std::cout  << " 4c1 \n";
+	// std::cout  << " 4c1 \n";
 	return 1;
 }
 
 if (theta > 140.00) {
-	std::cout  << " 1c4 \n";
+	// std::cout  << " 1c4 \n";
 	return 2;
 }
 
 if ((112.5 > theta) && (theta > 67.5) && (130 < phi) && (phi < 170)) {
-	std::cout  << " 2sO \n";
+	// std::cout  << " 2sO \n";
 	return 3;
 }
-
-std::cout  << " ???\n ";
 
 return 0;
 }
@@ -543,7 +538,45 @@ void parse_pdbqt_branch_aux(std::istream& in, unsigned& count, const std::string
 		throw stream_parse_error(count, "No atom number " + boost::lexical_cast<std::string>(first) + " in this branch");
 }
 
-              
+std::string get_ring_name(int number){
+	if (number == 1) {
+		return "1C4";
+	}
+	if 	(number == 2) {
+		return "4C1";
+	}
+	if (number == 3) {
+		return "2SO";
+	}
+	if (number == 0) {
+		return "???";
+	}
+
+}
+
+std::string get_anomeric_name(int number){
+	if (number == 0) {
+		return "a";
+	}
+	if 	(number == 1) {
+		return "b";
+	}
+	else {
+		return "?";
+	}
+}
+
+std::string get_axial_equitorial_name(int number){
+	if (number == 0) {
+		return "a";
+	}
+	if 	(number == 1) {
+		return "e";
+	}
+	else {
+		return "?";
+	}
+}              
 
 void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, context& c, boost::optional<unsigned>& torsdof, bool residue_vc) {
 	
@@ -577,11 +610,6 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
 	}
 
 	std::cout << "\n";
-
-	VINA_FOR(h,ligand_info.size())
-	{
-		std::cout << h << " " << ligand_info[h].atomname << "\n";
-	}
 
 	VINA_FOR(h,branch_atom1.size())
 	{
@@ -631,9 +659,6 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
 	bool S1_C1_, S1_C2_, S1_C3_, S1_C4_, S1_C5_, S1_O5_, S2_Ox_, S2_C1_, S2_C2_, S2_C3_, S2_C4_, S2_C5_, S2_O5_ ;
 	S1_C1_ = S1_C2_ = S1_C3_ = S1_C4_ = S1_C5_ = S1_O5_ = S2_Ox_ = S2_C1_ = S2_C2_ = S2_C3_ = S2_C4_ = S2_C5_ = S2_O5_ = false;
 
-	std::cout << h << " " << branch_atom1[h] - 1 << " " << ligand_info[branch_atom1[h]-1].atomname << " " << ligand_info[branch_atom1[h]-1].resnum 
-	<< " " << branch_atom2[h] - 1 << " " << ligand_info[branch_atom2[h]-1].atomname << " " << ligand_info[branch_atom2[h]-1].resnum << "\n";
-
     if(
 	// if the two atoms from the BRANCH line are from different residues 
 	(ligand_info[branch_atom1[h]-1].resnum!=ligand_info[branch_atom2[h]-1].resnum) && 
@@ -644,9 +669,6 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
 	ligand_info[branch_atom2[h]-1].resname.compare("ROH")!=0 )  )
 
 	{//found glycosidic
-
-	std::cout << "\n";
-
 	VINA_FOR(i,2){if(i==0){branch=branch_atom1[h];} else if(i==1){branch=branch_atom2[h];} 
 	//using 2 values for i, one for branch_atom1 and another for branch_atom2
 
@@ -682,73 +704,73 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
 				if(ligand_info[j].atomname.compare("O5")==0){S2_O5[0]=j; S2_O5_=true;}}
 				} 
 
-		// 	float distance=0.0, distance_1up=100.0, distance_1down=100.0;
-		// 		VINA_FOR(j,ligand_info.size()){
-		// 		if(ligand_info[j].resnum==ligand_info[branch-1].resnum){
-		// 			if(ligand_info[j].atomname[0]=='C'){
-		// 				distance=sqrt(pow(ligand_info[j].coords.data[0]-ligand_info[S2_Cx[0]].coords.data[0],2)+pow(ligand_info[j].coords.data[1]-ligand_info[S2_Cx[0]].coords.data[1],2)+pow(ligand_info[j].coords.data[2]-ligand_info[S2_Cx[0]].coords.data[2],2));
-		// 					if(distance<distance_1up && ligand_info[j].atomname.compare(ligand_info[S2_Cx[0]].atomname)>0)
-		// 					{
-		// 					distance_1up=distance;
-		// 					S2_Cxp1[0]=j;
-		// 					}
-		// 					if(distance<distance_1down && ligand_info[j].atomname.compare(ligand_info[S2_Cx[0]].atomname)<0)
-		// 					{
-		// 					distance_1down=distance;
-        //                                                 S2_Cxm1[0]=j;
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 		float distance_O1=100.0;
-		// 		VINA_FOR(j,ligand_info.size())
-		// 		{
-		// 			if(ligand_info[j].resnum==ligand_info[branch-1].resnum)
-        //                                 {
-		// 				if(ligand_info[j].atomname.compare("O5")==0)
-		// 				{
-		// 				S2_O5[0]=j;
-		// 				}
-		// 				if(ligand_info[j].atomname.compare("O1")==0)
-        //                                         {//To find S2_O1 -- if present inside same residue as O1
-        //                                         S2_O1[0]=j;
-        //                                         }
-		// 				if(ligand_info[j].atomname.compare("O4")==0)
-        //                                         {//To find S2_O1 -- if present inside same residue as O1
-        //                                         S2_O4[0]=j;
-        //                                         }
-        //                                         if(ligand_info[j].atomname.compare("C4")==0)
-        //                                         {//To find S2_O1 -- if present inside same residue as O1
-        //                                         S2_C4[0]=j;
-        //                                         }
-        //                                         if(ligand_info[j].atomname.compare("C3")==0)
-        //                                         {//To find S2_O1 -- if present inside same residue as O1
-        //                                         S2_C3[0]=j;
-        //                                         }
-		// 				else
-		// 				{//To find S2_O1 -- when having to use Ox of neighbouring residue in it's place
-		// 					VINA_FOR(k,ligand_info.size())
-		// 					{//Going through all atoms im structure so that nearest linking Oxygen atom can be found
-		// 						if(ligand_info[k].atomname[0]=='O' && ligand_info[k].atomname[1]!='5')
-		// 						{
-		// 						distance=sqrt(pow(ligand_info[k].coords.data[0]-ligand_info[S2_C1[0]].coords.data[0],2)+pow(ligand_info[k].coords.data[1]-ligand_info[S2_C1[0]].coords.data[1],2)+pow(ligand_info[k].coords.data[2]-ligand_info[S2_C1[0]].coords.data[2],2));
-		// 							if(distance<distance_O1)
-		// 							{
-		// 							distance_O1=distance;
-		// 							S2_O1[0]=k;
-		// 							}
-		// 						}
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	} //end of if where Ox was found
+			float distance=0.0, distance_1up=100.0, distance_1down=100.0;
+				VINA_FOR(j,ligand_info.size()){
+				if(ligand_info[j].resnum==ligand_info[branch-1].resnum){
+					if(ligand_info[j].atomname[0]=='C'){
+						distance=sqrt(pow(ligand_info[j].coords.data[0]-ligand_info[S2_Cx[0]].coords.data[0],2)+pow(ligand_info[j].coords.data[1]-ligand_info[S2_Cx[0]].coords.data[1],2)+pow(ligand_info[j].coords.data[2]-ligand_info[S2_Cx[0]].coords.data[2],2));
+							if(distance<distance_1up && ligand_info[j].atomname.compare(ligand_info[S2_Cx[0]].atomname)>0)
+							{
+							distance_1up=distance;
+							S2_Cxp1[0]=j;
+							}
+							if(distance<distance_1down && ligand_info[j].atomname.compare(ligand_info[S2_Cx[0]].atomname)<0)
+							{
+							distance_1down=distance;
+                                                        S2_Cxm1[0]=j;
+							}
+						}
+					}
+				}
+				float distance_O1=100.0;
+				VINA_FOR(j,ligand_info.size())
+				{
+					if(ligand_info[j].resnum==ligand_info[branch-1].resnum)
+                                        {
+						if(ligand_info[j].atomname.compare("O5")==0)
+						{
+						S2_O5[0]=j;
+						}
+						if(ligand_info[j].atomname.compare("O1")==0)
+                                                {//To find S2_O1 -- if present inside same residue as O1
+                                                S2_O1[0]=j;
+                                                }
+						if(ligand_info[j].atomname.compare("O4")==0)
+                                                {//To find S2_O1 -- if present inside same residue as O1
+                                                S2_O4[0]=j;
+                                                }
+                                                if(ligand_info[j].atomname.compare("C4")==0)
+                                                {//To find S2_O1 -- if present inside same residue as O1
+                                                S2_C4[0]=j;
+                                                }
+                                                if(ligand_info[j].atomname.compare("C3")==0)
+                                                {//To find S2_O1 -- if present inside same residue as O1
+                                                S2_C3[0]=j;
+                                                }
+						else
+						{//To find S2_O1 -- when having to use Ox of neighbouring residue in it's place
+							VINA_FOR(k,ligand_info.size())
+							{//Going through all atoms im structure so that nearest linking Oxygen atom can be found
+								if(ligand_info[k].atomname[0]=='O' && ligand_info[k].atomname[1]!='5')
+								{
+								distance=sqrt(pow(ligand_info[k].coords.data[0]-ligand_info[S2_C1[0]].coords.data[0],2)+pow(ligand_info[k].coords.data[1]-ligand_info[S2_C1[0]].coords.data[1],2)+pow(ligand_info[k].coords.data[2]-ligand_info[S2_C1[0]].coords.data[2],2));
+									if(distance<distance_O1)
+									{
+									distance_O1=distance;
+									S2_O1[0]=k;
+									}
+								}
+							}
+						}
+					}
+				}
+			} //end of if where Ox was found
 		}//end of if i is either 0 or 1!
-	}
+	
 		if ((S1_C1_) && (S1_C2_) && (S1_C3_) && (S1_C4_) && (S1_C5_) && (S1_O5_) && (S2_Ox_) 
 		&& (S2_C1_) && (S2_C2_) && (S2_C3_) && (S2_C4_) && (S2_C5_) && (S2_O5_)) {
 
-				std::cout << "here";
+
 				C1[0].i=ligand_info[S1_C1[0]].coords[0];
 				C1[0].j=ligand_info[S1_C1[0]].coords[1];
 				C1[0].k=ligand_info[S1_C1[0]].coords[2];
@@ -792,14 +814,9 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
 				cp_ring_atoms[4]=C4;
 				cp_ring_atoms[5]=C5;
 
-				// Printing
-				std::cout << ligand_info[S1_C1[0]].resname << " " << ligand_info[S1_C1[0]].resnum << " ";
-
-				// std::cout << "\n " << branch_atom1.size() << "\n";
-
 				ring1_conf=classify_ring_using_cremer_pople(cp_ring_atoms);
-
 				sizet_ring1_conf[0]=ring1_conf;
+
 				C1[0].i=ligand_info[S2_C1[0]].coords[0];
 				C1[0].j=ligand_info[S2_C1[0]].coords[1];
 				C1[0].k=ligand_info[S2_C1[0]].coords[2];
@@ -838,53 +855,38 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
 				cp_ring_atoms[4]=C4;
 				cp_ring_atoms[5]=C5;
 
-				std::cout << ligand_info[S2_C1[0]].resname << " " << ligand_info[S2_C1[0]].resnum << " ";
-
-				// std::cout << "\n " << branch_atom2.size() << "\n";
-
 				ring2_conf=classify_ring_using_cremer_pople(cp_ring_atoms);
 
-				std::cout << "\n";
-
 				sizet_ring2_conf[0]=ring2_conf;
-				if(sizet_ring1_conf[0]==0)
-				{
-				VC_log<<"CHI energy penalties NOT applied to phi torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<".\n";
-				}
-				if(sizet_ring2_conf[0]==0)
-				{
-				VC_log<<"CHI energy penalties NOT applied to psi torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<".\n";
-				}
-				if(sizet_ring1_conf[0]==0 && sizet_ring2_conf[0]==0)
-				{
-				VC_log<<"CHI energy penalities NOT applied to glycosidic linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<".\n";
-				}
-				if(sizet_ring1_conf[0]!=0 && sizet_ring2_conf[0]!=0)
-				{
-				VC_log<<"CHI energy penalties applied to "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<" linkage.\n";
-				}
-				if( ((S1_AB_angle<-40) && (S1_AB_angle>-80)) || ((S1_AB_angle>40) && (S1_AB_angle<80)) )
-				{
-					//Phi_Alpha_L
-					S1_AB[0]=0;
-				}
-				else if( ((S1_AB_angle<-160) && (S1_AB_angle>-200)) || ((S1_AB_angle>160) && (S1_AB_angle<200)) )
-				{
-                                        //Phi_Beta_D
-					S1_AB[0]=1;
-				}
-				if( (S2_AE_angle<120 && S2_AE_angle>80) )
-				{
-				//Axial attachment
-				S2_AE[0]=0;
-				}
-				else if(S2_AE_angle>130 && S2_AE_angle<170)
-				{
-				//Equatorial attachment
-				S2_AE[0]=1;
-				}
+
+
+				if( ((S1_AB_angle<-40) && (S1_AB_angle>-80)) || ((S1_AB_angle>40) && (S1_AB_angle<80)) ){S1_AB[0]=0;} //Phi_Alpha_L
+				else if( ((S1_AB_angle<-160) && (S1_AB_angle>-200)) || ((S1_AB_angle>160) && (S1_AB_angle<200)) ) {S1_AB[0]=1;} //Phi_Beta_D
+				if( (S2_AE_angle<120 && S2_AE_angle>80)){S2_AE[0]=0;} //axial attachment
+				else if(S2_AE_angle>130 && S2_AE_angle<170){S2_AE[0]=1;} //equatorial attachment
 				if(S2_omega_angle>0){S2_6AE[0]=1;}
 				else if (S2_omega_angle<0){S2_6AE[0]=0;}
+				
+				if(sizet_ring1_conf[0]==0 || sizet_ring2_conf[0]==0)
+				{VC_log<<"CHI energy penalties NOT applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum
+				<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<". ";}
+				
+				if(sizet_ring1_conf[0]==0 || sizet_ring2_conf[0]==0)
+				{std::cout<<"CHI energy penalties NOT applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname
+				<<" "<<ligand_info[branch_atom1[h]-1].resnum<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<" ";}
+				
+				if(sizet_ring1_conf[0]!=0 && sizet_ring2_conf[0]!=0)
+				{VC_log<<"CHI energy penalties NOT applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum
+				<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<". ";}
+				
+				if(sizet_ring1_conf[0]!=0 && sizet_ring2_conf[0]!=0)
+				{std::cout<<"CHI energy penalties applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum
+				<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<" ";}
+
+				std::cout <<"| "<<get_ring_name(sizet_ring1_conf[0]) << " (" << get_anomeric_name(S1_AB[0]) << "1 - " << S2_Link[0] << 
+				get_axial_equitorial_name(S2_AE[0]) << ") "<<get_ring_name(sizet_ring2_conf[0]) << "\n";
+
+
 		//Co-ordinates START
 		glyco_info.push_back(S1_O5); //index 0
 		glyco_info.push_back(S1_C1); //index 1
@@ -900,12 +902,11 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
     	glyco_info.push_back(S2_O5); //index 9 
 		glyco_info.push_back(sizet_ring1_conf); //index 10
 		glyco_info.push_back(sizet_ring2_conf); //index 11
-        //Co-ordinates ED
+        //Co-ordinates END
 		ligand_glyco_info.push_back(glyco_info);
 		glyco_info.clear();
 		}
-	}//end of finding glycosidic
-
+	}
 	}//end of for for branch atom size
 }
 
