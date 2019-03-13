@@ -1,1 +1,1 @@
-CHI energy penalties NOT applied to torsion in linkage b/w SGN   1  and IDS   2 . 
+CHI energy penalties NOT applied to torsion in linkage b/w NAG 181  and BDP 180 . CHI energy penalties NOT applied to torsion in linkage b/w BDP 180  and NAG 179 . CHI energy penalties NOT applied to torsion in linkage b/w NAG 179  and BDP 178 . CHI energy penalties NOT applied to torsion in linkage b/w BDP 178  and NAG 177 . CHI energy penalties NOT applied to torsion in linkage b/w NAG 177  and BDP 176 . CHI energy penalties NOT applied to torsion in linkage b/w BDP 176  and NAG 175 . 

@@ -71,6 +71,39 @@
         },
 
         {
+            "name": "test_pdbqt",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/eric/Desktop/GlycoTorch-Vina/autodock_vina_1_1_2/build/linux/release/vina-carb",
+            "args": ["--receptor",
+                "/home/eric/Desktop/GlycoTorch-Vina/debug/_3B9F_WithoutLigands.pdb.pdbqt",
+                "--ligand",
+                "/home/eric/Desktop/GlycoTorch-Vina/debug/test.pdbqt",
+                "--config",
+                "/home/eric/Desktop/GlycoTorch-Vina/debug/3B9F_LIGAND_1.pdb.conf",
+                "--chi_coeff",
+                "1",
+                "--chi_cutoff",
+                "0",
+                // "--cpu", ""
+            ]
+                ,
+            "stopAtEntry": false,
+            "cwd": "/home/eric/Desktop/GlycoTorch-Vina/autodock_vina_1_1_2/build",
+            "environment": [{ "name": "VINA_CARB", 
+                "value": "/home/eric/Documents/Docking/docking_vina_carb/GlycoTorch-Vina" } ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": false
+                }
+            ]
+        },
+
+        {
 
             "name": "tetrasacharide with 4c1 and 1c4",
             "type": "cppdbg",
@@ -85,7 +118,7 @@
                 "--chi_coeff",
                 "1",
                 "--chi_cutoff",
-                "0",
+                "0", "--score_only"
                 // "--cpu", "1"
             ]
                 ,
