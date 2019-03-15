@@ -1,0 +1,1 @@
+CHI energy penalties NOT applied to torsion in linkage b/w IDS 506  and SGN 505 . CHI energy penalties NOT applied to torsion in linkage b/w SGN 505  and IDS 504 . CHI energy penalties NOT applied to torsion in linkage b/w IDS 504  and SGN 503 . CHI energy penalties NOT applied to torsion in linkage b/w SGN 503  and IDS 502 . 

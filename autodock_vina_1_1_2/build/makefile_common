@@ -30,11 +30,11 @@ LIBS = -l boost_system${BOOST_LIB_VERSION} -l boost_thread${BOOST_LIB_VERSION} -
 %.o : ../../../src/split/%.cpp 
 	$(CC) $(CFLAGS) -I ../../../src/lib -o $@ -c $< 
 
-all: vina-carb vina_split
+all: GlycoTorchVina
 
 include dependencies
 
-vina-carb: $(MAINOBJ) $(LIBOBJ)
+GlycoTorchVina: $(MAINOBJ) $(LIBOBJ)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 vina_split: $(SPLITOBJ)
