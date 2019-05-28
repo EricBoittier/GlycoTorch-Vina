@@ -30,6 +30,7 @@
 #include "file.h"
 #include "curl.h"
 #include "parse_pdbqt.h"
+
 #include <boost/thread/mutex.hpp>
 namespace
 	{
@@ -667,13 +668,13 @@ fl model::evale(const precalculate& p, const igrid& ig, const vec& v            
 
 double model::energy_2SO_1_e4_D_PHI(double angle)
 {
-double LH = 4.359708247316277, Lc = 29.27117168076318, LW = 3873.8975726702674, 
-RH = -2.948491807983969, Rc = 126.32904338325498, RW = 826.0987631007995, 
-aH = 5.848873167333682, ac = 172.7314013953158, aW = 3670.2219001991334, 
-bH = 1.475893448498687, bc = 273.8161781189412, bW = 417.0692425804288, 
-cH = 3.9598919873550558, cc = 310.15686340297225, cW = 897.1386567386608, 
-dH = 3.7623279400842375, dc = 320.70035097807676, dW = 14299.427761495232, 
-c = -0.8924033032135367,
+double LH = 5.786777580670103, Lc = 8.098053634973736, LW = 2753.762333064837, 
+RH = 0.0692225771338087, Rc = 50.54256915660346, RW = 1.286409230273317, 
+aH = 6.978641980587078, ac = 124.41278474401206, aW = 2409.184064806489, 
+bH = 3.597194410920904, bc = 223.48379033777172, bW = 1746.525191256936, 
+cH = 0.19777, cc = 308.199, cW = 0.193, 
+dH = 6.085244874134106, dc = 351.8947071668183, dW = 722.1639073471689, 
+c = -0.1825025459044995,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -686,15 +687,16 @@ Totx = Rightx + Leftx + ax + bx + cx + dx + ex + c;
 return Totx;
 }
 
+
 double model::energy_2SO_1_e4_D_PSI(double angle)
 {
-double LH = 2.5604611056949214, Lc = 303.50448722899597, LW = 516.7508796989758, 
-RH = -3.2614993606521407, Rc = 303.28860490012204, RW = 931.3397339999491, 
-aH = 2.820817462362836, ac = 190.3502725765731, aW = 846.8272888455898, 
-bH = 1.3116652120885153, bc = 123.89981105264911, bW = 508.09132124471665, 
-cH = 3.7652862325101504, cc = 61.62846391150891, cW = 952.9935834609684, 
-dH = -97.80047812375938, dc = 1347.6760596440222, dW = 9553.573822154925, 
-c = 0.9735579307057209,
+double LH = 8.019537710608343, Lc = 383.86770723671754, LW = 2387.4605344012803, 
+RH = 1.216382562005517, Rc = 305.04588383448555, RW = 257.82606527854284, 
+aH = 2.722194683228984, ac = 241.28934856135479, aW = 776.8745577974178, 
+bH = 42.14778365674114, bc = 120.36692451589816, bW = 61555.268006440805, 
+cH = -25.422232138174447, cc = 120.7324344588033, cW = 26011.697262069363, 
+dH = 1.80427851774316, dc = 16.063164970872908, dW = 464.7467294296705, 
+c = -16.693959181375092,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -706,18 +708,64 @@ dx = dH * exp(-pow((x-(dc)),2.0)/dW);
 Totx = Rightx + Leftx + ax + bx + cx + dx + ex + c;
 return Totx;
 }
+
+//
+
+
+double model::energy_D_1a_4e_D_PHI(double angle)
+{
+double LH = 26.48598964858855, Lc = 4.950119263168551, LW = 3212.688930413348, 
+RH = 7.300934499492486, Rc = 93.12649880200293, RW = 554.2866685739236, 
+aH = 8.96676221440636, ac = 219.64086513698314, aW = 1573.7807694319702, 
+bH = 12.98986507897573, bc = 138.00845917160382, bW = 1781.9041278501127, 
+cH = 16.483073571802358, cc = 258.8171675661575, cW = 10364.538380243057, 
+dH = 19.70805003709569, dc = 378.51995258335813, dW = 13848.946920885712, 
+c = -12.126766045396995,
+Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
+x=angle;
+Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
+Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
+ax = aH * exp(-pow((x-(ac)),2.0)/aW);
+bx = bH * exp(-pow((x-(bc)),2.0)/bW);
+cx = cH * exp(-pow((x-(cc)),2.0)/cW);
+dx = dH * exp(-pow((x-(dc)),2.0)/dW);
+Totx = Rightx + Leftx + ax + bx + cx + dx + ex + c;
+return Totx;
+}
+
+double model::energy_D_1a_4e_D_PSI(double angle)
+{
+double LH = 4.09265099150287, Lc = 351.9714268628975, LW = 1724.5959574089472, 
+RH = 2.621655174513126, Rc = 290.45969096750423, RW = 421.6533854297553, 
+aH = 4.640325917581854, ac = 234.32061557680996, aW = 1326.1751571713291, 
+bH = 0.4457268909330672, bc = 111.4466532726789, bW = 200.07948278160242, 
+cH = -0.11760639592959019, cc = 55.67460927258712, cW = 50.20256226194887, 
+dH = 3.7512382121717853, dc = 0.013650083413456497, dW = 913.5402625684743, 
+c = 0.1417511839092434,
+Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
+x=angle;
+Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
+Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
+ax = aH * exp(-pow((x-(ac)),2.0)/aW);
+bx = bH * exp(-pow((x-(bc)),2.0)/bW);
+cx = cH * exp(-pow((x-(cc)),2.0)/cW);
+dx = dH * exp(-pow((x-(dc)),2.0)/dW);
+Totx = Rightx + Leftx + ax + bx + cx + dx + ex + c;
+return Totx;
+}
+
 
 //
 
 double model::energy_D_a1_4_2SO_PHI(double angle)
 {
-double LH = 6.9, Lc = 68.0, LW = 0.0, 
-RH = 11.659152274463143, Rc = 119.79297559684207, RW = 6992.909966507498, 
-aH = 1.3603650164374643, ac = 307.6251497928516, aW = 646.7882221895775, 
-bH = -3.615161542405505, bc = 230.02532951385652, bW = 888.8198197109309, 
-cH = -4.853804441506952, cc = 109.3070343908871, cW = 1634.8747888051992, 
-dH = 2.4916833606078845, dc = 367.63640930223863, dW = 1040.4679111392395, 
-c = 1.6670371052490376,
+double LH = 0.3450390445195492, Lc = 57.45142589589642, LW = 0.0747965048292564, 
+RH = 8.697213710419703, Rc = 8.651693443223726, RW = 679.4560286054373, 
+aH = 6.339043402359135, ac = 137.77272619896945, aW = 9446.378040663907, 
+bH = 8.031741232107448, bc = 249.21854636397202, bW = 3234.569762850727, 
+cH = 0.19777, cc = 308.199, cW = 0.193, 
+dH = 12.625300327157005, dc = 340.33938218492875, dW = 3773.1283100984333, 
+c = -3.395438989191497,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -730,15 +778,16 @@ Totx = Rightx + Leftx + ax + bx + cx + dx + ex + c;
 return Totx;
 }
 
+
 double model::energy_D_a1_4_2SO_PSI(double angle)
 {
-double LH = 6.94871708950802, Lc = 54.578177790579005, LW = 1535.2698918725655, 
-RH = 5.554362074751906, Rc = 194.3413033329821, RW = 3887.2784380306507, 
-aH = 0.5602230089917873, ac = 299.9126055955525, aW = 211.4877981092501, 
-bH = -4.369144200221367, bc = 226.70745099673786, bW = 1417.0122348174993, 
-cH = -2.34661024226204, cc = 43.773110495046964, cW = 481.8675745806132, 
-dH = 1.7914817393081224, dc = 363.9784183253017, dW = 182.84455394321645, 
-c = 0.4840111578002676,
+double LH = 4.570100382283367, Lc = 356.3675419981772, LW = 3108.2162452970033, 
+RH = 5.66148431827418, Rc = 245.41571065014838, RW = 1135.763693493447, 
+aH = 1.7801170200205705, ac = 194.66509301713498, aW = 953.3800952854571, 
+bH = 0.8586129122785483, bc = 119.92145727944653, bW = 350.9937123822785, 
+cH = -4.7463375255587845, cc = 44.42923649511447, cW = 1314.7661431717395, 
+dH = 6.226815781718102, dc = 18.31199814660554, dW = 3292.4355467745763, 
+c = 0.17786286458437578,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -753,15 +802,15 @@ return Totx;
 
 //
 
-double model::energy_L_a1_e4_D_PSI(double angle)
+double model::energy_L_a1_e4_D_PHI(double angle)
 {
-double LH = 12.962429302892675, Lc = 85.46229703521264, LW = 1458.7892164485636, 
-RH = 3.1603145455476094, Rc = 191.46296594939247, RW = 1279.7830283754727, 
-aH = -0.6246596560505729, ac = 305.87064526089017, aW = 2306.553297433773, 
-bH = -0.40618765516122574, bc = 221.27228560794836, bW = 273.88862409591474, 
-cH = -10.853485895524086, cc = 89.70184526684163, cW = 914.4743175542117, 
-dH = 1.0, dc = 0.0, dW = 0.0, 
-c = 0.6436456386363167,
+double LH = 23.54467183231146, Lc = 3.101653157102172, LW = 10747.501233162136, 
+RH = 5.5624733476479875, Rc = 122.7312170350182, RW = 1392.8872748293793, 
+aH = 1.6450541648979669, ac = 84.85970146987677, aW = 608.5208816357399, 
+bH = 20.038740568716328, bc = 224.73126957667859, bW = 22924.160009328298, 
+cH = 1.7874663246155262, cc = 311.05107368659344, cW = 421.99704638573763, 
+dH = 14.636252374665752, dc = 358.39168308885394, dW = 1034.6179750088427, 
+c = -17.451344303294235,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -774,15 +823,16 @@ Totx = Rightx + Leftx + ax + bx + cx + dx + ex + c;
 return Totx;
 }
 
-double model::energy_L_a1_e4_D_PHI(double angle)
+
+double model::energy_L_a1_e4_D_PSI(double angle)
 {
-double LH = 7.614592811265287, Lc = 289.67204203945215, LW = 3978.885414576388, 
-RH = 5.388137729917904, Rc = 208.0520242319089, RW = 1898.5208167527662, 
-aH = 4.279392016058717, ac = 179.69816073860844, aW = 971.5517628865543, 
-bH = 0.5692306281653353, bc = 1988.5455350419015, bW = 1.121416106131602, 
-cH = 2.156369999432613, cc = 61.77140760350418, cW = 985.5875515527207, 
-dH = 2.9182925365463226, dc = 4.20233633251493, dW = 2252.5727175010406, 
-c = -0.22526059365739395,
+double LH = 3.6955570148634247, Lc = 369.46537470125816, LW = 1548.5935427972654, 
+RH = 4.624081495583906, Rc = 241.42041813120954, RW = 1202.9002490013213, 
+aH = 2.039021838658495, ac = 303.28895178286297, aW = 516.8418275441966, 
+bH = 0.1674834228601522, bc = 175.36883993449143, bW = 157.64400609297311, 
+cH = 0.0, cc = 1111130.0, cW = 240.0, 
+dH = 5.016974385463165, dc = -18.711532269998635, dW = 3622.7941902190473, 
+c = 0.06861271651873228,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -799,13 +849,13 @@ return Totx;
 
 double model::energy_D_1a_4a_L_PHI(double angle)
 {
-double LH = 8.215355663608781, Lc = 81.58142683598575, LW = 5242.4277869765265, 
-RH = 6.0686645297686646, Rc = 157.71400487058838, RW = 1068.5912001366532, 
-aH = 3.50984970930512, ac = 187.1650289881355, aW = 531.7794783561717, 
-bH = 1.3468040262930794, bc = 279.4932995964358, bW = 256.18420542249663, 
-cH = 2.1342418228040256, cc = 308.1583831414212, cW = 480.3928637353839, 
-dH = 3.279983501237371, dc = 348.73877215579176, dW = 705.6382095328541, 
-c = -0.02742111038999487,
+double LH = 9.37203699768221, Lc = 344.57031029995034, LW = 2750.8289483663866, 
+RH = 8.301128794832048, Rc = 249.3864719401834, RW = 3399.648751409178, 
+aH = 1.4564474127773772, ac = 163.78107114740905, aW = 287.2909802408595, 
+bH = 2.9115250646783957, bc = 126.03817698047261, bW = 2072.2270141814433, 
+cH = 1.4737122037406605, cc = -6.110671494414014, cW = 36.59832904794991, 
+dH = 8.319739058974337, dc = -2.561229255292376, dW = 967.1814252591313, 
+c = -0.5932417909342516,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -820,13 +870,13 @@ return Totx;
 
 double model::energy_D_1a_4a_L_PSI(double angle)
 {
-double LH = 4.038572351124325, Lc = 288.1223228606298, LW = 1090.2320324585273, 
-RH = 5.255277821355811, Rc = 237.0330034683259, RW = 746.534192812652, 
-aH = 5.854973867113257, ac = 178.7272547545124, aW = 1291.908751246364, 
-bH = 1.0899910315417805, bc = 104.95199123398154, bW = 110.7492576716796, 
-cH = 0.5846991735544921, cc = 56.389700673389164, cW = 262.17912222577365, 
-dH = 0.9112707352083366, dc = 4.035111186433551, dW = 28.681341540120915, 
-c = 0.026484054464878493,
+double LH = 5.9566653946488115, Lc = 360.05386377091054, LW = 1364.4958097656474, 
+RH = 1.1015697071351425, Rc = 285.0935619302083, RW = 98.95497697373801, 
+aH = 0.5746961345117937, ac = 236.41595398513567, aW = 254.922458957485, 
+bH = 122.90440959009497, bc = 82.14180300730007, bW = 1321.6671105443766, 
+cH = -118.45031115396628, cc = 82.43335266616559, cW = 1240.5252645104322, 
+dH = 5.6577927407352515, dc = -1.647605853768977, dW = 934.9490550492618, 
+c = 0.03621406473619319,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -843,13 +893,13 @@ return Totx;
 
 double model::energy_4c1_a1_a4_4c1_PHI(double angle)
 {
-double LH = 8.004543186726876, Lc = 77.85233712724319, LW = 5455.960123111793, 
-RH = 6.27840620609398, Rc = 155.5752083277422, RW = 1246.6074492935256, 
-aH = 4.339147785143784, ac = 185.55908530905037, aW = 702.7872247711337, 
-bH = 3.086522647595491, bc = 329.66839919445357, bW = 4730.334624920652, 
-cH = 1.2326055148176038, cc = 356.4232838489615, cW = 264.75091371997235, 
-dH = 6.647856428704409, dc = 385.98945416549094, dW = 30.341388740661834, 
-c = -0.6689872272627778,
+double LH = 8.213310858271715, Lc = 1.7926839120684337, LW = 685.7760273077516, 
+RH = 3.424147301470867, Rc = 167.97938352461418, RW = 6345.179358727855, 
+aH = 2.3308281689995907, ac = 223.96628886097704, aW = 384.85804096851575, 
+bH = 4.342590805679991, bc = 254.69068660284958, bW = 997.6182265864005, 
+cH = 6.259114236778761, cc = 385.71920833167917, cW = 3549.379825272741, 
+dH = 7.204675417979718, dc = 320.03355291356485, dW = 3561.134654167791, 
+c = -0.517144644722223,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -864,13 +914,13 @@ return Totx;
 
 double model::energy_4c1_a1_a4_4c1_PSI(double angle)
 {
-double LH = 3.409413378028371, Lc = 41.047256725062795, LW = 438.4188036833962, 
-RH = 5.2074157902203435, Rc = 93.7610143227761, RW = 3478.619983211818, 
-aH = 5.645865478301781, ac = 172.78854477370072, aW = 1099.3424881797048, 
-bH = 0.5392939612690947, bc = 288.6282067422295, bW = 309.9954681996438, 
-cH = 0.19777, cc = 3080.199, cW = 224.193, 
-dH = 38.656778469013524, dc = 1104.964659112571, dW = 148373.97759200912, 
-c = -0.4038347511817272,
+double LH = 13.433061603095672, Lc = 358.04032820712564, LW = 1899.9279688158113, 
+RH = 5.153902426438827, Rc = 219.89360995507965, RW = 651.7478613731439, 
+aH = 1.2638987524232488, ac = 170.2904437999118, aW = 255.36078483124095, 
+bH = 11.207992262948215, bc = 278.90442759582993, bW = 3198.2494512721973, 
+cH = 10.171193644255442, cc = 113.01192337605896, cW = 22269.652012576058, 
+dH = 11.284460571322642, dc = -18.487675003024336, dW = 2213.197553004574, 
+c = -9.773067022827103,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -887,13 +937,13 @@ return Totx;
 
 double model::energy_4c1_b1_e3_4c1_PHI(double angle)
 {
-double LH = 6.9, Lc = 68.0, LW = 0.0, 
-RH = 4.32711277425824, Rc = 181.46914889527443, RW = 1235.9818531573799, 
-aH = 2.8886672952308095, ac = 298.7912187800737, aW = 1280.316237492101, 
-bH = -1.298180460482828, bc = 250.30335666232517, bW = 620.9712745436813, 
-cH = -2.576379105563004, cc = 109.11095696281704, cW = 3043.200209080894, 
-dH = -2.7057312256679777, dc = 354.16793044412776, dW = 38.45515297600506, 
-c = 2.591561729544288,
+double LH = 8.303556372099342, Lc = 370.59424813579983, LW = 2185.808511458602, 
+RH = 0.754872132601317, Rc = 277.54500502420234, RW = 0.023572324447474813, 
+aH = 3.178974516691342, ac = 201.9456947902523, aW = 4735.554393725815, 
+bH = 3.4069171086209287, bc = 122.42666554070702, bW = 1267.2516052994272, 
+cH = -4.6711787805201395, cc = 57.42953599364581, cW = 1509.3706369056954, 
+dH = 8.566036416750155, dc = 25.461901003596214, dW = 7611.673511125467, 
+c = -0.9578256943922852,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -908,13 +958,13 @@ return Totx;
 
 double model::energy_4c1_b1_e3_4c1_PSI(double angle)
 {
-double LH = -16.500350321423088, Lc = 81.04613249850134, LW = 3324.3093061958643, 
-RH = 0.19332886656597498, Rc = -16.42785995686048, RW = 21.561100631640812, 
-aH = 4.143131612469768, ac = 188.99388352199406, aW = 1285.2853933906251, 
-bH = 2.6041941513620297, bc = 257.095292985663, bW = 501.9166686393258, 
-cH = 4.134668202627348, cc = 311.2074873861674, cW = 1238.1800052376595, 
-dH = 16.940905465703946, dc = 80.10601851046633, dW = 3642.862864087344, 
-c = -0.2636164402052412,
+double LH = 3.319450800870311, Lc = 365.790884299536, LW = 884.6027313809342, 
+RH = 4.303944465040149, Rc = 348.0560758940835, RW = 14003.024045192471, 
+aH = 3.1373008553934603, ac = 202.87813722153138, aW = 3547.959269697899, 
+bH = 4.570763305881191, bc = 135.83845468513903, bW = 878.4736701774258, 
+cH = -4.650600792420828, cc = 45.6199669046581, cW = 798.9084188265219, 
+dH = 9.797945595236888, dc = 38.20722967146416, dW = 5681.857090796186, 
+c = -3.5482496963047905,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -931,13 +981,13 @@ return Totx;
 
 double model::energy_4c1_b1_4e_4c1_PHI(double angle)
 {
-double LH = 9.072264959383777, Lc = 13.903369029602617, LW = 19585.685526697027, 
-RH = 1.0260158377303492, Rc = 126.97681191469557, RW = 350.9840047498267, 
-aH = 4.552720962681688, ac = 157.74530574591387, aW = 824.8319296094436, 
-bH = 7.738982922572851, bc = 194.97612776782356, bW = 1650.6175708315393, 
-cH = 1.8460097576649908, cc = 290.44189995703096, cW = 974.8782280277637, 
-dH = 10.407613696290978, dc = 315.6148749908362, dW = 8213.1086340685, 
-c = -6.561879366631349,
+double LH = 10.885773343319286, Lc = 0.9956854641367685, LW = 3977.4783130385804, 
+RH = 7.055785137441634, Rc = 114.76501291714945, RW = 1989.6810391305673, 
+aH = 7.204521129251005, ac = 206.101614559824, aW = 8851.693394883163, 
+bH = 0.36275700355557083, bc = 242.965495689631, bW = 342.8908827713568, 
+cH = 10.414274535817524, cc = 357.1874047672286, cW = 2567.312271447906, 
+dH = 2830.202947251256, dc = -547.731940387011, dW = 6025.98094401193, 
+c = -4.981570684131585,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -952,13 +1002,13 @@ return Totx;
 
 double model::energy_4c1_b1_4e_4c1_PSI(double angle)
 {
-double LH = 3.826247303166274, Lc = 62.65126784061971, LW = 974.9193945663436, 
-RH = 1.8846986460682171, Rc = 130.5623697724467, RW = 447.57435633353515, 
-aH = 3.289123567470172, ac = 189.4577579387754, aW = 1179.3346979215887, 
-bH = 0.6635688943301651, bc = 268.13876288043014, bW = 416.7488587408713, 
-cH = -2.489011981034135, cc = 620.2069640808243, cW = 633922.8496762958, 
-dH = 1.338345311946964, dc = 362.5544913580919, dW = 151.28553574836548, 
-c = 2.270729155804515,
+double LH = 3.5980413744858244, Lc = 13.55323354615593, LW = 901.9166343757295, 
+RH = 0.792810174018804, Rc = 85.85878398756877, RW = 783.0835671349489, 
+aH = 0.7044334508732699, ac = 180.29318178248704, aW = 230.63353516594464, 
+bH = 4.462261467126196, bc = 241.84980098803095, bW = 1312.0073428020658, 
+cH = 2.1907865233843125, cc = 308.9594096592764, cW = 338.48537457054715, 
+dH = 3.040046094678087, dc = 357.6415049427966, dW = 1050.8466277879143, 
+c = 0.07392441201750177,
 Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
 x=angle;
 Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
@@ -974,171 +1024,171 @@ return Totx;
 ///// GlycoTorch Energy Equations (END)
 
 
-double model::phi_alpha_energy(double phi_angle)
-{
-double LH = 2.97696467271672, Lc = -199.494365163839, LW = 677.808323900125, RH = 102.253303636096, Rc = 170.599580473404, RW = 1696.78443699429, aH = 10.7448005875571, ac = -105.313553566706, aW = 4724.58364072706, bH = 3.67344580413578, bc = 6.20116671874232, bW = 1347.72056251564, cH = 2.06094652655659, cc = 91.6553021324274, cW = 1500.02002601097, Off = 1.00501e-30, dH = 6.19388683252667, dc = -22.9786969888816, dW = 2122.27783139301, eH = -2.11153017593601, ec = 83.6019123356148, eW = 1254.13371108961, fH = -98.0013005657107, fc = 170.012289132741, fW = 1598.73272567307, Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
-x=phi_angle;
-Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
-Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
-ax = aH * exp(-pow((x-(ac)),2.0)/aW);
-bx = bH * exp(-pow((x-(bc)),2.0)/bW);
-cx = cH * exp(-pow((x-(cc)),2.0)/cW);
-dx = dH * exp(-pow((x-(dc)),2.0)/dW);
-ex = eH * exp(-pow((x-(ec)),2.0)/eW);
-fx = fH * exp(-pow((x-(fc)),2.0)/fW);
-Totx = Rightx + Leftx + ax + bx + cx + dx + ex + fx;
-return Totx;
-}
+// double model::phi_alpha_energy(double phi_angle)
+// {
+// double LH = 2.97696467271672, Lc = -199.494365163839, LW = 677.808323900125, RH = 102.253303636096, Rc = 170.599580473404, RW = 1696.78443699429, aH = 10.7448005875571, ac = -105.313553566706, aW = 4724.58364072706, bH = 3.67344580413578, bc = 6.20116671874232, bW = 1347.72056251564, cH = 2.06094652655659, cc = 91.6553021324274, cW = 1500.02002601097, Off = 1.00501e-30, dH = 6.19388683252667, dc = -22.9786969888816, dW = 2122.27783139301, eH = -2.11153017593601, ec = 83.6019123356148, eW = 1254.13371108961, fH = -98.0013005657107, fc = 170.012289132741, fW = 1598.73272567307, Leftx, Rightx, ax, bx, cx, dx, ex, fx, x, Totx;
+// x=phi_angle;
+// Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
+// Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
+// ax = aH * exp(-pow((x-(ac)),2.0)/aW);
+// bx = bH * exp(-pow((x-(bc)),2.0)/bW);
+// cx = cH * exp(-pow((x-(cc)),2.0)/cW);
+// dx = dH * exp(-pow((x-(dc)),2.0)/dW);
+// ex = eH * exp(-pow((x-(ec)),2.0)/eW);
+// fx = fH * exp(-pow((x-(fc)),2.0)/fW);
+// Totx = Rightx + Leftx + ax + bx + cx + dx + ex + fx;
+// return Totx;
+// }
 
-double model::phi_beta_energy(double phi_angle)
-{
-double Lc = -330.769995527134, aH = 5.93533323829663, ac = -152.080139620062, aW = 6049.77220005964, bH = 22.467372096061, bc = -23.5159916173247, bW = 606.89715970453, cH = 10.0360057033439, cc = 120.962836525241, cW = 4037.89330459304, LH = 450.540038600828, LW = 4449.7622241787, RH = 23.7118506901333, Rc = 304.624980492529, RW = 8375.1929028027, /*Off = -2.27829251796721,*/ Off = -2.1283, dH = -18.1406478565247, dc = -24.2677756921736, dW = 543.050986049266, eH = 5.88226333077368, ec = 19.6321032903376, eW = 897.92664572344, Leftx, Rightx, ax, bx, cx, dx, ex, x, Totx;
-x=phi_angle;
-Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
-Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
-ax = aH * exp(-pow((x-(ac)),2.0)/aW);
-bx = bH * exp(-pow((x-(bc)),2.0)/bW);
-cx = cH * exp(-pow((x-(cc)),2.0)/cW);
-dx = dH * exp(-pow((x-(dc)),2.0)/dW);
-ex = eH * exp(-pow((x-(ec)),2.0)/eW);
-Totx = Rightx + Leftx + ax + bx + cx + dx + ex + Off;
-return Totx;
-}
+// double model::phi_beta_energy(double phi_angle)
+// {
+// double Lc = -330.769995527134, aH = 5.93533323829663, ac = -152.080139620062, aW = 6049.77220005964, bH = 22.467372096061, bc = -23.5159916173247, bW = 606.89715970453, cH = 10.0360057033439, cc = 120.962836525241, cW = 4037.89330459304, LH = 450.540038600828, LW = 4449.7622241787, RH = 23.7118506901333, Rc = 304.624980492529, RW = 8375.1929028027, /*Off = -2.27829251796721,*/ Off = -2.1283, dH = -18.1406478565247, dc = -24.2677756921736, dW = 543.050986049266, eH = 5.88226333077368, ec = 19.6321032903376, eW = 897.92664572344, Leftx, Rightx, ax, bx, cx, dx, ex, x, Totx;
+// x=phi_angle;
+// Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
+// Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
+// ax = aH * exp(-pow((x-(ac)),2.0)/aW);
+// bx = bH * exp(-pow((x-(bc)),2.0)/bW);
+// cx = cH * exp(-pow((x-(cc)),2.0)/cW);
+// dx = dH * exp(-pow((x-(dc)),2.0)/dW);
+// ex = eH * exp(-pow((x-(ec)),2.0)/eW);
+// Totx = Rightx + Leftx + ax + bx + cx + dx + ex + Off;
+// return Totx;
+// }
 
-double model::psi_2A3E_energy(double psi_angle)
-{
-double LH = 4.62366277694845, Lc = 5.045583934308, LW = 5005.75236060956, RH = 4.61387450239844, Rc = 362.487847702007, RW = 2090.63190217702, aH = 4.94191727813274, ac = 121.202321824468, aW = 2093.75214491931, bH = 0.402901504292045, bc = 241.428583877882, bW = 456.828754790442, cH = 0.798876573705798, cc = 68.425080241155, cW = 678.807178379645, Off = -0.125645118474882, dc = 192.925748017071, dW = 347.244734136509, dH = 0.222992242737354, Leftx, Rightx, ax, bx, cx, dx, x, Totx;
-if(psi_angle<0)
-{
-psi_angle=360+psi_angle;}
-x=psi_angle;
-Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
-Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
-ax = aH * exp(-pow((x-(ac)),2.0)/aW);
-bx = bH * exp(-pow((x-(bc)),2.0)/bW);
-cx = cH * exp(-pow((x-(cc)),2.0)/cW);
-dx = dH * exp(-pow((x-(dc)),2.0)/dW);
-Totx = Rightx + Leftx + ax + bx + cx + dx + Off;
-return Totx;
-}
+// double model::psi_2A3E_energy(double psi_angle)
+// {
+// double LH = 4.62366277694845, Lc = 5.045583934308, LW = 5005.75236060956, RH = 4.61387450239844, Rc = 362.487847702007, RW = 2090.63190217702, aH = 4.94191727813274, ac = 121.202321824468, aW = 2093.75214491931, bH = 0.402901504292045, bc = 241.428583877882, bW = 456.828754790442, cH = 0.798876573705798, cc = 68.425080241155, cW = 678.807178379645, Off = -0.125645118474882, dc = 192.925748017071, dW = 347.244734136509, dH = 0.222992242737354, Leftx, Rightx, ax, bx, cx, dx, x, Totx;
+// if(psi_angle<0)
+// {
+// psi_angle=360+psi_angle;}
+// x=psi_angle;
+// Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
+// Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
+// ax = aH * exp(-pow((x-(ac)),2.0)/aW);
+// bx = bH * exp(-pow((x-(bc)),2.0)/bW);
+// cx = cH * exp(-pow((x-(cc)),2.0)/cW);
+// dx = dH * exp(-pow((x-(dc)),2.0)/dW);
+// Totx = Rightx + Leftx + ax + bx + cx + dx + Off;
+// return Totx;
+// }
 
-double model::psi_2E3A_energy(double psi_angle)
-{
-double LH = 4.46811874171788, Lc = 1e-30, LW = 1279.58772056199, RH = 4.38204018882823, Rc = 357.770654336205, RW = 6050.14162479438, aH = 284.944948778136, ac = 146.644068129462, aW = 1551.75673776163, bH = 4.76134025362478, bc = 220.683118921686, bW = 5892.94143218231, cH = -169.197666368856, cc = 147.370828680332, cW = 1742.47541063603, Off = 1.0219924486158, dc = 146.05660843428, dW = 1359.82873591396, dH = -118.440552792375, Leftx, Rightx, ax, bx, cx, dx, x, Totx;
-if(psi_angle<0){
-psi_angle=360+psi_angle;}
-x=psi_angle;
-Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
-Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
-ax = aH * exp(-pow((x-(ac)),2.0)/aW);
-bx = bH * exp(-pow((x-(bc)),2.0)/bW);
-cx = cH * exp(-pow((x-(cc)),2.0)/cW);
-dx = dH * exp(-pow((x-(dc)),2.0)/dW);
-Totx = Rightx + Leftx + ax + bx + cx + dx + Off;
-return Totx;
-}
+// double model::psi_2E3A_energy(double psi_angle)
+// {
+// double LH = 4.46811874171788, Lc = 1e-30, LW = 1279.58772056199, RH = 4.38204018882823, Rc = 357.770654336205, RW = 6050.14162479438, aH = 284.944948778136, ac = 146.644068129462, aW = 1551.75673776163, bH = 4.76134025362478, bc = 220.683118921686, bW = 5892.94143218231, cH = -169.197666368856, cc = 147.370828680332, cW = 1742.47541063603, Off = 1.0219924486158, dc = 146.05660843428, dW = 1359.82873591396, dH = -118.440552792375, Leftx, Rightx, ax, bx, cx, dx, x, Totx;
+// if(psi_angle<0){
+// psi_angle=360+psi_angle;}
+// x=psi_angle;
+// Leftx = LH * exp(-pow((x-(Lc)),2.0)/LW);
+// Rightx = RH * exp(-pow((x-(Rc)),2.0)/RW);
+// ax = aH * exp(-pow((x-(ac)),2.0)/aW);
+// bx = bH * exp(-pow((x-(bc)),2.0)/bW);
+// cx = cH * exp(-pow((x-(cc)),2.0)/cW);
+// dx = dH * exp(-pow((x-(dc)),2.0)/dW);
+// Totx = Rightx + Leftx + ax + bx + cx + dx + Off;
+// return Totx;
+// }
 
-double model::psi_6A_energy(double psi_angle)
-{
-double aH = 67.9431348410598, ac = -59.5393395706705, aW = 993.323581145538, bH = 6.13421142432396, bc = 10.4786088782815, bW = 945.770771330812, cH = 3.27628727235978, cc = 54.2960678151208, cW = 851.528141801851, dH = 0.727486729062442, dc = 131.067737803489, dW = 1037.41211378392, eH = 2.57362265878937, ec = 245.102891425541, eW = 2012.99451568206, fH = 5.75995973448166, fc = 359.999988549478, fW = 1153.3974275673, gH = 3.47492643928157, gc = 321.677942414686, gW = 2080.97053159226, hH = -0.741000462200939, hc = 199.106903524814, hW = 522.180434119001, ax, bx, cx, dx, ex, fx, gx, hx, x, Totx;
+// double model::psi_6A_energy(double psi_angle)
+// {
+// double aH = 67.9431348410598, ac = -59.5393395706705, aW = 993.323581145538, bH = 6.13421142432396, bc = 10.4786088782815, bW = 945.770771330812, cH = 3.27628727235978, cc = 54.2960678151208, cW = 851.528141801851, dH = 0.727486729062442, dc = 131.067737803489, dW = 1037.41211378392, eH = 2.57362265878937, ec = 245.102891425541, eW = 2012.99451568206, fH = 5.75995973448166, fc = 359.999988549478, fW = 1153.3974275673, gH = 3.47492643928157, gc = 321.677942414686, gW = 2080.97053159226, hH = -0.741000462200939, hc = 199.106903524814, hW = 522.180434119001, ax, bx, cx, dx, ex, fx, gx, hx, x, Totx;
 
-if(psi_angle<0)
-{
-psi_angle=360+psi_angle;
-}
-x=psi_angle;
-ax = aH * exp(-pow((x-(ac)),2.0)/aW);
-bx = bH * exp(-pow((x-(bc)),2.0)/bW);
-cx = cH * exp(-pow((x-(cc)),2.0)/cW);
-dx = dH * exp(-pow((x-(dc)),2.0)/dW);
-ex = eH * exp(-pow((x-(ec)),2.0)/eW);
-fx = fH * exp(-pow((x-(fc)),2.0)/fW);
-gx = gH * exp(-pow((x-(gc)),2.0)/gW);
-hx = hH * exp(-pow((x-(hc)),2.0)/hW);
-Totx = ax + bx + cx + dx + ex + fx + gx + hx;
-return Totx;
-}
+// if(psi_angle<0)
+// {
+// psi_angle=360+psi_angle;
+// }
+// x=psi_angle;
+// ax = aH * exp(-pow((x-(ac)),2.0)/aW);
+// bx = bH * exp(-pow((x-(bc)),2.0)/bW);
+// cx = cH * exp(-pow((x-(cc)),2.0)/cW);
+// dx = dH * exp(-pow((x-(dc)),2.0)/dW);
+// ex = eH * exp(-pow((x-(ec)),2.0)/eW);
+// fx = fH * exp(-pow((x-(fc)),2.0)/fW);
+// gx = gH * exp(-pow((x-(gc)),2.0)/gW);
+// hx = hH * exp(-pow((x-(hc)),2.0)/hW);
+// Totx = ax + bx + cx + dx + ex + fx + gx + hx;
+// return Totx;
+// }
 
-double model::psi_6E_energy(double psi_angle)
-{
-double aH = 7.24858655753829, ac = 3.60600554520403, aW = 2459.23916629141, bH = 1.9, bc = 96.5930821702371, bW = 2683.88656516991, cH = 0.741022592342903, cc = 141.663521919709, cW = 1150.04756181103, dH = 0.2, dc = 162, dW = 400, eH = 0.287090039932611, ec = 228.171314273305, eW = 272.201363844744, fH = 1.22591971967808, fc = 292.206221787048, fW = 1134.52455512381, gH = 7.41063235334191, gc = 369.867701147817, gW = 3499.15994772992, hH = -0.61489499584011, hc = 271.319024293053, hW = 532.437194483944, iH = -0.35, ic = 183, iW = 100, ax, bx, cx, dx, ex, fx, gx, hx, ix, x, Totx;
+// double model::psi_6E_energy(double psi_angle)
+// {
+// double aH = 7.24858655753829, ac = 3.60600554520403, aW = 2459.23916629141, bH = 1.9, bc = 96.5930821702371, bW = 2683.88656516991, cH = 0.741022592342903, cc = 141.663521919709, cW = 1150.04756181103, dH = 0.2, dc = 162, dW = 400, eH = 0.287090039932611, ec = 228.171314273305, eW = 272.201363844744, fH = 1.22591971967808, fc = 292.206221787048, fW = 1134.52455512381, gH = 7.41063235334191, gc = 369.867701147817, gW = 3499.15994772992, hH = -0.61489499584011, hc = 271.319024293053, hW = 532.437194483944, iH = -0.35, ic = 183, iW = 100, ax, bx, cx, dx, ex, fx, gx, hx, ix, x, Totx;
 
-if(psi_angle<0)
-{
-psi_angle=360+psi_angle;
-}
-x=psi_angle;
-ax = aH * exp(-pow((x-(ac)),2.0)/aW);
-bx = bH * exp(-pow((x-(bc)),2.0)/bW);
-cx = cH * exp(-pow((x-(cc)),2.0)/cW);
-dx = dH * exp(-pow((x-(dc)),2.0)/dW);
-ex = eH * exp(-pow((x-(ec)),2.0)/eW);
-fx = fH * exp(-pow((x-(fc)),2.0)/fW);
-gx = gH * exp(-pow((x-(gc)),2.0)/gW);
-hx = hH * exp(-pow((x-(hc)),2.0)/hW);
-ix = iH * exp(-pow((x-(ic)),2.0)/iW);
-Totx = ax + bx + cx + dx + ex + fx + gx + hx + ix;
-return Totx;
-}
+// if(psi_angle<0)
+// {
+// psi_angle=360+psi_angle;
+// }
+// x=psi_angle;
+// ax = aH * exp(-pow((x-(ac)),2.0)/aW);
+// bx = bH * exp(-pow((x-(bc)),2.0)/bW);
+// cx = cH * exp(-pow((x-(cc)),2.0)/cW);
+// dx = dH * exp(-pow((x-(dc)),2.0)/dW);
+// ex = eH * exp(-pow((x-(ec)),2.0)/eW);
+// fx = fH * exp(-pow((x-(fc)),2.0)/fW);
+// gx = gH * exp(-pow((x-(gc)),2.0)/gW);
+// hx = hH * exp(-pow((x-(hc)),2.0)/hW);
+// ix = iH * exp(-pow((x-(ic)),2.0)/iW);
+// Totx = ax + bx + cx + dx + ex + fx + gx + hx + ix;
+// return Totx;
+// }
 
-double model::omega_6A_energy(double omega_angle)
-{
-double x, energy, b, k=0.0025;
-        if(omega_angle<0)
-        {
-        x=360+omega_angle;
-        }
-        else
-        {
-        x=omega_angle;
-        }
-        if((x>=0.0 && x<120.0)||(x>=360.0 && x<120.0))
-        {
-        b=0.0;
-        energy=k*pow((x-60),2)+b;
-        }
-        else if(x>=120.0 && x<240.0)
-        {
-        b=0.3;
-        energy=k*pow((x-180),2)+b;
-        }
-        else if(x>=240.0 && x<360.0)
-        {
-        b=1.0;
-        energy=k*pow((x-300),2)+b;
-        }
-return energy;
-}
+// double model::omega_6A_energy(double omega_angle)
+// {
+// double x, energy, b, k=0.0025;
+//         if(omega_angle<0)
+//         {
+//         x=360+omega_angle;
+//         }
+//         else
+//         {
+//         x=omega_angle;
+//         }
+//         if((x>=0.0 && x<120.0)||(x>=360.0 && x<120.0))
+//         {
+//         b=0.0;
+//         energy=k*pow((x-60),2)+b;
+//         }
+//         else if(x>=120.0 && x<240.0)
+//         {
+//         b=0.3;
+//         energy=k*pow((x-180),2)+b;
+//         }
+//         else if(x>=240.0 && x<360.0)
+//         {
+//         b=1.0;
+//         energy=k*pow((x-300),2)+b;
+//         }
+// return energy;
+// }
 
 
-double model::omega_6E_energy(double omega_angle)
-{
-double x, energy, b, k=0.0025;
-        if(omega_angle<0)
-        {
-        x=360+omega_angle;
-        }
-        else
-        {
-        x=omega_angle;
-        }
-        if((x>=0.0 && x<120.0)||(x>=360.0 && x<120.0))
-        {
-        b=0.21;
-        energy=k*pow((x-60),2)+b;
-        }
-        else if(x>=120.0 && x<240.0)
-        {
-        b=1.39;
-        energy=k*pow((x-180),2)+b;
-        }
-        else if(x>=240.0 && x<360.0)
-        {
-        b=0.0;
-        energy=k*pow((x-300),2)+b;
-        }
-return energy;
-}
+// double model::omega_6E_energy(double omega_angle)
+// {
+// double x, energy, b, k=0.0025;
+//         if(omega_angle<0)
+//         {
+//         x=360+omega_angle;
+//         }
+//         else
+//         {
+//         x=omega_angle;
+//         }
+//         if((x>=0.0 && x<120.0)||(x>=360.0 && x<120.0))
+//         {
+//         b=0.21;
+//         energy=k*pow((x-60),2)+b;
+//         }
+//         else if(x>=120.0 && x<240.0)
+//         {
+//         b=1.39;
+//         energy=k*pow((x-180),2)+b;
+//         }
+//         else if(x>=240.0 && x<360.0)
+//         {
+//         b=0.0;
+//         energy=k*pow((x-300),2)+b;
+//         }
+// return energy;
+// }
 
 
 
@@ -1172,16 +1222,70 @@ return coords;
 }
 
 
+fl lennard_jones(double a, double b, double r) {
+	double six = pow(b/r, 6);
+	return a*(pow(six, 2) - 2*six);
+}
+
+fl model::eval_additional_ffs() {
+	std::vector< std::vector<double> > additional_ffs = get_additional_ffs();
+	fl energy = 0;
+
+	VINA_FOR(i,additional_ffs.size()){
+		std::vector<double> ff = additional_ffs[i];
+
+		vec coord_A, coord_B;
+		coord_A = grid_atoms[ff[2]].coords;
+		coord_B = coords[ff[3]];
+		double dist = pow(vec_distance_sqr(coord_A, coord_B), 0.5);
+		
+
+		// std::cout << dist << "\n";
+
+		if (dist < 8){
+			// Lennard-Jones
+			if (ff[0] == 0) {
+				if (ff[1] == 0) {
+					// Protein Ligand
+					if (ff[0] == 0) {
+						// std::cout << "here\n";
+						// std::cout << ff[4] << " " << ff[5] <<  " " << dist << "\n";
+						energy += lennard_jones(ff[4], ff[5], dist);  
+						// std::cout << lennard_jones(ff[4], ff[5], dist) << "\n";  
+					}
+					// Ligand Ligand
+					if (ff[0] == 1) {
+						energy += lennard_jones(ff[4], ff[5], dist);  
+					}
+
+				}
+			}
+
+	}
+	}
+	// std::cout << energy << "\n";
+	return energy;
+}
+
+
+
 fl model::eval_chi(const fl chi_coeff, const fl chi_cutoff)
 {
 fl e=0.0;
+
 if(chi_coeff!=0){
 	double phi_energy=0.0, psi_energy=0.0,omega_energy=0.0, phi=0.0, psi=0.0, omega=0.0, total=0.0,current_energy=0.0;
 	std::vector< std::vector<size_t*> > glyco_info=glycan_info_func();
-	VINA_FOR(i,glyco_info.size())
-	{
+
+	//  Loop through the linkages
+	VINA_FOR(i,glyco_info.size()){
+
+	// 	get_torsion_coords_vecs_list return angles between -180 and 180, need to be converted to fall between 0 - 360
 	phi=get_torsion_coords_vecs_list(coords[glyco_info[i][0][0]],coords[glyco_info[i][1][0]],coords[glyco_info[i][2][0]],coords[glyco_info[i][3][0]]);
+	if(phi<0){phi=360+phi;}
+
 	psi=get_torsion_coords_vecs_list(coords[glyco_info[i][1][0]],coords[glyco_info[i][2][0]],coords[glyco_info[i][3][0]],coords[glyco_info[i][4][0]]);
+	if(psi<0){psi=360+psi;}
 
 
 
@@ -1190,7 +1294,7 @@ if(chi_coeff!=0){
 	// While there is some cross-over with the two SFs, having the GlycoTorch SFs called first in the IF/ELSE loop
 	// means there will be no double-ups. 
 
-	///                       2SO                        4C1	     equitorial = 1
+	//                       2SO                        4C1	     equitorial = 1
 	if ((glyco_info[i][10][0]==3) && (glyco_info[i][11][0]==1) && (glyco_info[i][6][0]==1)
 	
 	//                    linkage
@@ -1199,18 +1303,20 @@ if(chi_coeff!=0){
 				current_energy=energy_2SO_1_e4_D_PHI(phi);
 				if(current_energy>chi_cutoff){
 				phi_energy+=current_energy;
+				//std::cout << " phi " << current_energy << " " << phi << "...";
 				current_energy=0.0;
 				}
 
 				current_energy=energy_2SO_1_e4_D_PSI(psi);
 				if(current_energy>chi_cutoff){
 				psi_energy+=current_energy;
+				// std::cout << " psi " << current_energy << " " << psi << "...";
 				current_energy=0.0;
 				}
 	}
 
-	///                       4C1                        2SO				alpha = 0              equitorial = 1
-	if ((glyco_info[i][10][0]==1) && (glyco_info[i][11][0]==3) && (glyco_info[i][5][0]==0) && (glyco_info[i][6][0]==1)
+	///                       4C1                        2SO				alpha = 0              
+	if ((glyco_info[i][10][0]==1) && (glyco_info[i][11][0]==3) && (glyco_info[i][5][0]==0) 
 	
 	//                    linkage
 	&& (glyco_info[i][7][0]==4) ) {
@@ -1240,27 +1346,7 @@ if(chi_coeff!=0){
 				current_energy=0.0;
 				}
 
-				current_energy=energy_L_a1_e4_D_PHI(psi);
-				if(current_energy>chi_cutoff){
-				psi_energy+=current_energy;
-				current_energy=0.0;
-				}
-	}
-
-
-	///                       4C1                       1C4				alpha = 0              axial = 0
-	if ((glyco_info[i][10][0]==1) && (glyco_info[i][11][0]==2) && (glyco_info[i][5][0]==0) && (glyco_info[i][6][0]==0)
-	
-	//                    linkage
-	&& (glyco_info[i][7][0]==4) ) {
-
-				current_energy=energy_L_a1_e4_D_PHI(phi);
-				if(current_energy>chi_cutoff){
-				phi_energy+=current_energy;
-				current_energy=0.0;
-				}
-
-				current_energy=energy_L_a1_e4_D_PHI(psi);
+				current_energy=energy_L_a1_e4_D_PSI(psi);
 				if(current_energy>chi_cutoff){
 				psi_energy+=current_energy;
 				current_energy=0.0;
@@ -1274,6 +1360,7 @@ if(chi_coeff!=0){
 	//                    linkage
 	&& (glyco_info[i][7][0]==4) ) {
 
+				// to do: fix name so it matches linkage
 				current_energy=energy_4c1_a1_a4_4c1_PHI(phi);
 				if(current_energy>chi_cutoff){
 				phi_energy+=current_energy;
@@ -1287,10 +1374,50 @@ if(chi_coeff!=0){
 				}
 	}
 
+	///                       4C1                       1C4				alpha = 0              axial = 0
+	if ((glyco_info[i][10][0]==1) && (glyco_info[i][11][0]==2) && (glyco_info[i][5][0]==0) && (glyco_info[i][6][0]==0)
+	
+	//                    linkage
+	&& (glyco_info[i][7][0]==4) ) {
+
+				// to do: fix name so it matches linkage
+				current_energy=energy_4c1_a1_a4_4c1_PHI(phi);
+				if(current_energy>chi_cutoff){
+				phi_energy+=current_energy;
+				current_energy=0.0;
+				}
+
+				current_energy=energy_4c1_a1_a4_4c1_PSI(psi);
+				if(current_energy>chi_cutoff){
+				psi_energy+=current_energy;
+				current_energy=0.0;
+				}
+	}
+
+
+	///                       4C1                       4C1				alpha = 0              equitorial = 1
+	if ((glyco_info[i][10][0]==1) && (glyco_info[i][11][0]==1) && (glyco_info[i][5][0]==0) && (glyco_info[i][6][0]==1)
+	
+	//                    linkage
+	&& (glyco_info[i][7][0]==4) ) {
+
+				current_energy=energy_D_1a_4e_D_PHI(phi);
+				if(current_energy>chi_cutoff){
+				phi_energy+=current_energy;
+				current_energy=0.0;
+				}
+
+				current_energy=energy_D_1a_4e_D_PSI(psi);
+				if(current_energy>chi_cutoff){
+				psi_energy+=current_energy;
+				current_energy=0.0;
+				}
+	}
+
 	///                       4C1                       4C1				beta = 1              equitorial = 1
 	if ((glyco_info[i][10][0]==1) && (glyco_info[i][11][0]==1) && (glyco_info[i][5][0]==1) && (glyco_info[i][6][0]==1)
 	
-	//                    linkage
+	//                    linkage = 3
 	&& (glyco_info[i][7][0]==3) ) {
 
 				current_energy=energy_4c1_b1_e3_4c1_PHI(phi);
@@ -1325,167 +1452,6 @@ if(chi_coeff!=0){
 				}
 	}
 	/// GlycoTorch GAG specific scoring functions (END)
-
-	else {
-
-	if(glyco_info[i][10][0]!=0){
-		if(glyco_info[i][5][0]==0)
-		{//Alpha
-			if(glyco_info[i][10][0]==1)
-			{//D sugar (Alpha)
-			current_energy=phi_alpha_energy(phi);
-				if(current_energy>chi_cutoff){
-				phi_energy+=current_energy;
-				current_energy=0.0;
-				}
-			}
-			else if(glyco_info[i][10][0]==2)
-			{//L-Sugar (Alpha)
-			current_energy=phi_alpha_energy(-phi);
-				if(current_energy>chi_cutoff){
-				phi_energy+=current_energy;
-                current_energy=0.0;
-				}
-			}
-		}
-		else
-		{//Beta
-			if(glyco_info[i][10][0]==1)
-			{//D sugar (Beta)
-			current_energy=phi_beta_energy(phi);
-				if(current_energy>chi_cutoff){
-				phi_energy+=current_energy;
-				current_energy=0.0;
-				}
-			}
-			else if(glyco_info[i][10][0]==2)
-			{//L Sugar (Beta)
-			current_energy=phi_beta_energy(-phi);
-				if(current_energy>chi_cutoff){
-				phi_energy+=current_energy;
-				current_energy=0.0;
-				}
-			}
-		}
-	}
-	if(glyco_info[i][11][0]!=0){
-	omega=get_torsion_coords_vecs_list(coords[glyco_info[i][2][0]],coords[glyco_info[i][3][0]],coords[glyco_info[i][4][0]],coords[glyco_info[i][9][0]]);
-		if(glyco_info[i][7][0]==2 || glyco_info[i][7][0]==4)
-		{//2 or 4 linkage
-			if(glyco_info[i][6][0]==0)
-			{//Axial attachment
-				if(glyco_info[i][11][0]==2)
-				{//L sugar
-				current_energy=psi_2A3E_energy(-psi);
-					if(current_energy>chi_cutoff){
-					psi_energy+=current_energy;
-					current_energy=0.0;
-					}
-				}
-				else if(glyco_info[i][11][0]==1)
-				{//D sugar
-				current_energy=psi_2A3E_energy(psi);
-					if(current_energy>chi_cutoff){
-					psi_energy+=current_energy;
-                                        current_energy=0.0;
-					}
-				}
-			}
-			else
-			{//Equatorial attachment
-				if(glyco_info[i][11][0]==2)
-				{//L sugar
-				current_energy=psi_2E3A_energy(-psi);
-					if(current_energy>chi_cutoff){
-					psi_energy+=current_energy;
-					current_energy=0.0;
-					}
-				}
-				else if(glyco_info[i][11][0]==1)
-				{//D sugar
-				current_energy=psi_2E3A_energy(psi);
-					if(current_energy>chi_cutoff){
-					psi_energy+=current_energy;
-                                        current_energy=0.0;
-					}
-				}
-			
-			}
-		}
-		else if(glyco_info[i][7][0]==3)
-		{//3 linkage
-			if(glyco_info[i][6][0]==0)
-			{//Axial attachment
-			
-				if(glyco_info[i][11][0]==2)
-				{//L sugar
-				current_energy=psi_2E3A_energy(-psi);
-					if(current_energy>chi_cutoff){
-					psi_energy+=current_energy;
-                                        current_energy=0.0;
-					}
-				}
-				else if(glyco_info[i][11][0]==1)
-				{//D sugar
-                                current_energy=psi_2E3A_energy(psi);
-					if(current_energy>chi_cutoff){
-					psi_energy+=current_energy;
-                                        current_energy=0.0;
-					}
-				}
-			}
-			else
-			{//Equatorial attachment
-				if(glyco_info[i][11][0]==2)
-				{//L sugar
-                                current_energy=psi_2A3E_energy(-psi);
-					if(current_energy>chi_cutoff){
-					psi_energy+=current_energy;
-                                        current_energy=0.0;
-					}
-				}
-				else if(glyco_info[i][11][0]==1)
-				{//D sugar
-				current_energy=psi_2A3E_energy(psi);
-					if(current_energy>chi_cutoff){
-					psi_energy+=current_energy;
-                                        current_energy=0.0;
-					}
-				}
-			
-			}
-		}
-	else if(glyco_info[i][7][0]==6)
-                {//6 linkage
-                        if(glyco_info[i][8][0]==0)
-                                {
-                                current_energy=psi_6A_energy(psi);
-                                        if(current_energy>chi_cutoff){
-                                        psi_energy+=current_energy;
-                                        current_energy=0.0;
-                                        }
-                                current_energy=omega_6A_energy(omega);
-                                        if(current_energy>chi_cutoff){
-                                        omega_energy+=current_energy;
-                                        current_energy=0.0;
-                                        }
-                                }
-                        else if(glyco_info[i][8][0]==1)
-                                {
-                                current_energy=psi_6E_energy(psi);
-                                        if(current_energy>chi_cutoff){
-                                        psi_energy+=current_energy;
-                                        current_energy=0.0;
-                                        }
-                                current_energy=omega_6E_energy(omega);
-                                        if(current_energy>chi_cutoff){
-                                        omega_energy+=current_energy;
-                                        current_energy=0.0;
-                                        }
-                                }
-                }
-	}
-}
 }
 	total=phi_energy+psi_energy+omega_energy; total=total*chi_coeff; double combined_score=total+e; e=combined_score;}
 	else
@@ -1499,6 +1465,10 @@ fl  model::eval_deriv  (const precalculate& p, const igrid& ig, const vec& v, co
 	set(c);
 	fl chi_energy = 0.0;
 	chi_energy=eval_chi(chi_coeff,chi_cutoff);
+
+	fl ff_energy = 0.0;
+	ff_energy = eval_additional_ffs();
+
 	fl e = ig.eval_deriv(*this, v[1]); // sets minus_forces, except inflex
         e += eval_interacting_pairs_deriv(p, v[2], other_pairs, coords, minus_forces); // adds to minus_forces
         VINA_FOR_IN(i, ligands){
@@ -1506,7 +1476,7 @@ fl  model::eval_deriv  (const precalculate& p, const igrid& ig, const vec& v, co
 }
         ligands.derivative(coords, minus_forces, g.ligands);
 	flex.derivative(coords, minus_forces, g.flex); // inflex forces are ignored
-	return (e+chi_energy);
+	return (e + chi_energy + ff_energy);
 }
 
 

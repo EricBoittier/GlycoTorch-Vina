@@ -66,6 +66,27 @@
 ./everything.o: ../../../src/lib/igrid.h
 ./everything.o: ../../../src/lib/grid_dim.h
 ./everything.o: ../../../src/lib/int_pow.h
+./glyco_info.o: ../../../src/lib/parse_pdbqt.h
+./glyco_info.o: ../../../src/lib/model.h
+./glyco_info.o: ../../../src/lib/file.h
+./glyco_info.o: ../../../src/lib/common.h
+./glyco_info.o: ../../../src/lib/macros.h
+./glyco_info.o: ../../../src/lib/tree.h
+./glyco_info.o: ../../../src/lib/conf.h
+./glyco_info.o: ../../../src/lib/quaternion.h
+./glyco_info.o: ../../../src/lib/random.h
+./glyco_info.o: ../../../src/lib/atom.h
+./glyco_info.o: ../../../src/lib/atom_base.h
+./glyco_info.o: ../../../src/lib/atom_type.h
+./glyco_info.o: ../../../src/lib/atom_constants.h
+./glyco_info.o: ../../../src/lib/triangular_matrix_index.h
+./glyco_info.o: ../../../src/lib/matrix.h
+./glyco_info.o: ../../../src/lib/precalculate.h
+./glyco_info.o: ../../../src/lib/scoring_function.h
+./glyco_info.o: ../../../src/lib/igrid.h
+./glyco_info.o: ../../../src/lib/grid_dim.h
+./glyco_info.o: ../../../src/lib/convert_substring.h
+./glyco_info.o: ../../../src/lib/parse_error.h
 ./grid.o: ../../../src/lib/grid.h ../../../src/lib/array3d.h
 ./grid.o: ../../../src/lib/common.h ../../../src/lib/macros.h
 ./grid.o: ../../../src/lib/grid_dim.h ../../../src/lib/curl.h

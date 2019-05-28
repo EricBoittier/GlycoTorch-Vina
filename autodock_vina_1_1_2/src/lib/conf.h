@@ -365,6 +365,7 @@ struct output_type {
 	conf c;
 	fl e;
 	fl vce;
+	fl ffe;
 	vecv coords;
 	output_type(const conf& c_, fl e_) : c(c_), e(e_) {}
 };

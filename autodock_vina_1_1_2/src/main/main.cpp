@@ -249,7 +249,8 @@ void do_search(model& m, const boost::optional<model>& ref, const scoring_functi
 					{
 					change g(m.get_size());
 					out_cont[i].e = m.eval_adjusted(sf, prec, nc, authentic_v, out_cont[i].c, best_mode_intramolecular_energy);
-					out_cont[i].vce=m.eval_chi(chi_coeff,chi_cutoff);
+					out_cont[i].ffe = m.eval_additional_ffs();
+					out_cont[i].vce = m.eval_chi(chi_coeff,chi_cutoff);
 					out_cont[i].e+=out_cont[i].vce;
 					} 
 			// the order must not change because of non-decreasing g (see paper), but we'll re-sort in case g is non strictly increasing
@@ -264,8 +265,8 @@ void do_search(model& m, const boost::optional<model>& ref, const scoring_functi
 		log.setf(std::ios::fixed, std::ios::floatfield);
 		log.setf(std::ios::showpoint);
 		log << '\n';
-		log << "mode |   affinity |   chi   |  affinity | dist from best mode\n";
-		log << "     | (kcal/mol) |  energy |  - chi    | rmsd l.b.| rmsd u.b.\n";
+		log << "mode |   affinity |   chi,   |  affinity | dist from best mode\n";
+		log << "     | (kcal/mol) |   ffe    |  -chi -ff  | rmsd l.b.| rmsd u.b.\n";
 		log << "-----+------------+---------+--------------------+------------\n";
 
 
@@ -281,7 +282,7 @@ void do_search(model& m, const boost::optional<model>& ref, const scoring_functi
 //			log << std::setw(4) << i+1
 //				<< "    " << std::setw(9) << std::setprecision(1) << out_cont[i].e; // intermolecular_energies[i];
 			log << std::setw(4) << i+1
-				<< "    " << std::setw(9) << std::setprecision(1) << out_cont[i].e<<"      "<<out_cont[i].vce<<"      "<<out_cont[i].e-out_cont[i].vce; // intermolecular_energies[i];
+				<< "    " << std::setw(9) << std::setprecision(1) << out_cont[i].e<<"   "<<out_cont[i].vce<<", "<< out_cont[i].ffe <<"      " << out_cont[i].e-out_cont[i].vce-out_cont[i].ffe ; // intermolecular_energies[i];
 			m.set(out_cont[i].c);
 			const model& r = ref ? ref.get() : best_mode_model;
 			const fl lb = m.rmsd_lower_bound(r);
@@ -344,6 +345,8 @@ void main_procedure(model& m, const boost::optional<model>& ref, // m is non-con
 	par.num_tasks = exhaustiveness;
 	par.num_threads = cpu;
 	par.display_progress = (verbosity > 1);
+
+	
 
 	const fl slope = 1e6; // FIXME: too large? used to be 100
 	if(randomize_only) {
@@ -630,6 +633,7 @@ Thank you!\n";
 			log << "WARNING: The search space volume > 27000 Angstrom^3 (See FAQ)\n";
 		}
 
+		log << ligand_name << "\n";
 		if(output_produced) { // FIXME
 			if(!vm.count("out")) {
 				out_name = default_output(ligand_name);

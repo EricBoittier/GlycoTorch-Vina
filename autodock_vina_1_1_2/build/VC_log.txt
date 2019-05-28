@@ -1,1 +1,1 @@
-CHI energy penalties NOT applied to torsion in linkage b/w SGN 702  and IDU 623 . 
+CHI energy penalties NOT applied to torsion in linkage b/w SGN   1  and SGN   2 . 

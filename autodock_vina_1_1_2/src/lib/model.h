@@ -61,6 +61,9 @@ struct residue_vc : public main_branch {
 	residue_vc(const main_branch& m) : main_branch(m) {}
 };
 
+
+
+
 enum distance_type {DISTANCE_FIXED, DISTANCE_ROTOR, DISTANCE_VARIABLE};
 typedef strictly_triangular_matrix<distance_type> distance_type_matrix;
 
@@ -95,6 +98,7 @@ struct model {
 
 	void write_flex  (                  const path& name, const std::string& remark) const { write_context(flex_context, name, remark); }
 	void write_ligand(sz ligand_number, const path& name, const std::string& remark) const { VINA_CHECK(ligand_number < ligands.size()); write_context(ligands[ligand_number].cont, name, remark); }
+	
 	void write_structure(ofile& out) const {
 		VINA_FOR_IN(i, ligands)
 			write_context(ligands[i].cont, out);
@@ -130,6 +134,7 @@ struct model {
 	fl evali     (const precalculate& p,                  const vec& v                          ) const;
 	fl evale     (const precalculate& p, const igrid& ig, const vec& v                          ) const;
 	fl eval      (const precalculate& p, const igrid& ig, const vec& v, const conf& c           );
+	
 	double get_torsion_coords_vecs_list(vec A, vec B, vec C, vec D);
 	double phi_alpha_energy(double phi_angle);
 	double phi_beta_energy(double phi_angle);
@@ -164,8 +169,11 @@ struct model {
 	double energy_4c1_b1_4e_4c1_PSI(double angle);
 
 
-	///// GlycoTorch Energy Equations (END)
+	double energy_D_1a_4e_D_PSI(double angle);
+	double energy_D_1a_4e_D_PHI(double angle);
 
+
+	///// GlycoTorch Energy Equations (END)
 
 
 	fl eval_deriv(const precalculate& p, const igrid& ig, const vec& v, const conf& c, change& g, const fl chi_coeff, const fl chi_cutoff);
@@ -173,6 +181,9 @@ struct model {
 	fl eval_intramolecular(                            const precalculate& p,                  const vec& v, const conf& c);
 	fl eval_internal_torsional(const precalculate& p, const vec& v, const conf& c);
 	fl eval_chi(const fl chi_coeff, const fl chi_cutoff);
+	
+	fl eval_additional_ffs();
+	
 	fl eval_adjusted      (const scoring_function& sf, const precalculate& p, const igrid& ig, const vec& v, const conf& c, fl intramolecular_energy);
 
 
@@ -271,5 +282,8 @@ private:
 	sz m_num_movable_atoms;
 	atom_type::t m_atom_typing_used;
 };
+
+fl lennard_jones(double a, double b, double r) ;
+
 
 #endif

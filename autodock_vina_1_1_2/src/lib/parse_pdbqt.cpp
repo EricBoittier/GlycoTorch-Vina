@@ -40,6 +40,7 @@
 #include "parse_error.h"
 #include "glylib.h"
 
+
 coord_3D get_puckering_parm(coord_3D **r);
 
 std::vector<int> branch_atom1;
@@ -52,6 +53,122 @@ std::vector<size_t*> glyco_info;
 std::vector< std::vector<size_t*> > ligand_glyco_info;
 int hetatm=0;
 std::ofstream VC_log;
+
+
+// For storing additional force fields 
+std::vector< std::vector<double> > additional_ffs;
+
+std::vector< std::vector<double> > get_additional_ffs() {
+	return additional_ffs;
+}
+
+void parse_torsion_ff(std::string str) {
+		std::stringstream ss(str);
+
+	std::vector<double> ff;
+
+	std::string type;
+	ss >> type;
+	ss >> type;
+
+	if (type.compare("LLLL") == 0) { // index 0
+		ff.push_back(0);
+	}
+	else if (type.compare("PPPL") == 0) {
+		ff.push_back(1);
+	}
+	else if (type.compare("PPLL") == 0) {
+		ff.push_back(2);
+	}
+
+	ss >> type;
+
+	if (type.compare("4G") == 0) { // 4G = four gaussians
+		ff.push_back(0);
+	}	
+
+	int atom_number;
+
+	ss >> atom_number;
+	ff.push_back(atom_number); // index 2
+	ss >> atom_number;
+	ff.push_back(atom_number); // index 3
+	ss >> atom_number;
+	ff.push_back(atom_number); // index 4
+	ss >> atom_number;
+	ff.push_back(atom_number); // index 5
+
+	if (ff[1] == 0) { // we will put coeffs into index 4 to 16
+		double coeff;
+		for(size_t i = 0; i < 12; i++)
+		{
+			ss >> coeff;
+			ff.push_back(coeff);
+		}
+
+	}
+
+	additional_ffs.push_back(ff);
+}
+
+void parse_distance_ff(std::string str) {
+	
+	std::stringstream ss(str);
+
+	std::vector<double> ff;
+
+	std::string type;
+	ss >> type;
+	ss >> type;
+
+	if (type.compare("PL") == 0) { // index 0
+		ff.push_back(0);
+	}
+	else if (type.compare("LL") == 0) {
+		ff.push_back(1);
+	}
+
+	ss >> type;
+
+	if (type.compare("LJ") == 0){ // index 1
+		ff.push_back(0);
+	}
+	else if (type.compare("4G") == 0) { // FG = four gaussians
+		ff.push_back(1);
+	}	
+
+	int atom_number;
+
+	ss >> atom_number;
+	ff.push_back(atom_number); // index 2
+	ss >> atom_number;
+	ff.push_back(atom_number); // index 3
+
+	if (ff[1] == 0) { // we will put coeffs into index 4 to 5
+		double coeff;
+		for(size_t i = 0; i < 2; i++)
+		{
+			ss >> coeff;
+			// std::cout << coeff << "\n";
+			ff.push_back(coeff);
+		}
+	}
+
+	if (ff[1] == 1) { // we will put coeffs into index 4 to 16
+		double coeff;
+		for(size_t i = 0; i < 12; i++)
+		{
+			ss >> coeff;
+			// std::cout << coeff << "\n";
+			ff.push_back(coeff);
+		}
+
+	}
+
+	additional_ffs.push_back(ff);
+
+}
+
 
 struct stream_parse_error {
 	unsigned line;
@@ -264,9 +381,6 @@ int classify_ring_using_cremer_pople(coord_3D **ring)
 // ring_atoms[4]=C5;
 // ring_atoms[5]=O5;
 {
-
-
-
 coord_3D p ;
 p = get_puckering_parm(ring);
 
@@ -426,6 +540,10 @@ void parse_pdbqt_rigid(const path& name, rigid& r) {
 		else if(starts_with(str, "REMARK")) {} // ignore
 		else if(starts_with(str, "ATOM  ") || starts_with(str, "HETATM")) {
 			try {
+
+				// This is where the protein atoms are stored, an array inside the rigid structure.
+				// index of atoms should be equal to their atom number - 1
+
 				r.atoms.push_back(parse_pdbqt_atom_string(str));
 			}
 			catch(atom_syntax_error& e) {
@@ -494,6 +612,8 @@ void parse_pdbqt_root_aux(std::istream& in, unsigned& count, parsing_struct& p, 
 		else if(starts_with(str, "ENDROOT")) return;
 		else if(starts_with(str, "MODEL"))
 			throw stream_parse_error(count, "Unexpected multi-MODEL input. Use \"vina_split\" first?");
+		
+	
 		else throw stream_parse_error(count, "Unknown or inappropriate tag");
 	}
 }
@@ -504,6 +624,11 @@ void parse_pdbqt_root(std::istream& in, unsigned& count, parsing_struct& p, cont
 		add_context(c, str);
 		++count;
 		if(str.empty()) {} // ignore
+
+		else if(starts_with(str, "FFDIST")) {
+			parse_distance_ff(str);
+		}
+
 		else if(starts_with(str, "WARNING")) {} // ignore - AutoDockTools bug workaround
 		else if(starts_with(str, "REMARK")) {} // ignore
 		else if(starts_with(str, "ROOT")) {
@@ -515,6 +640,8 @@ void parse_pdbqt_root(std::istream& in, unsigned& count, parsing_struct& p, cont
 		else throw stream_parse_error(count, "Unknown or inappropriate tag");
 	}
 }
+
+
 
 void parse_pdbqt_branch(std::istream& in, unsigned& count, parsing_struct& p, context& c, unsigned from, unsigned to); // forward declaration
 
@@ -540,10 +667,10 @@ void parse_pdbqt_branch_aux(std::istream& in, unsigned& count, const std::string
 
 std::string get_ring_name(int number){
 	if (number == 1) {
-		return "1C4";
+		return "4C1";
 	}
 	if 	(number == 2) {
-		return "4C1";
+		return "1C4";
 	}
 	if (number == 3) {
 		return "2SO";
@@ -589,7 +716,7 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
 		if(str.empty()) {} // ignore ""
 		else if(starts_with(str, "WARNING")) {} // ignore - AutoDockTools bug workaround
 		else if(starts_with(str, "REMARK")) {} // ignore
-		else if(starts_with(str, "BRANCH")) parse_pdbqt_branch_aux(in, count, str, p, c);
+		else if(starts_with(str, "BRANCH")) parse_pdbqt_branch_aux(in, count, str, p, c);		
 		else if(!residue_vc && starts_with(str, "TORSDOF")) {
 			if(torsdof) throw stream_parse_error(count, "TORSDOF can occur only once");
 			torsdof = parse_one_unsigned(str, "TORSDOF", count);
@@ -866,45 +993,73 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
 				else if(S2_AE_angle>130 && S2_AE_angle<170){S2_AE[0]=1;} //equatorial attachment
 				if(S2_omega_angle>0){S2_6AE[0]=1;}
 				else if (S2_omega_angle<0){S2_6AE[0]=0;}
+
+				glyco_info.clear();
+				//Co-ordinates START
+				glyco_info.push_back(S1_O5); //index 0
+				glyco_info.push_back(S1_C1); //index 1
+				glyco_info.push_back(S2_Ox); //index 2
+				glyco_info.push_back(S2_Cx); //index 3
+				glyco_info.push_back(S2_Cxm1); //index 4
+				//Co-ordinates END
+				glyco_info.push_back(S1_AB); //index 5
+				glyco_info.push_back(S2_AE); //index 6
+				glyco_info.push_back(S2_Link); //index 7 
+				glyco_info.push_back(S2_6AE); //index 8  //0 -> positive; 1-> negative
+				//Co-ordinates START
+				glyco_info.push_back(S2_O5); //index 9 
+				glyco_info.push_back(sizet_ring1_conf); //index 10
+				glyco_info.push_back(sizet_ring2_conf); //index 11
+				//Co-ordinates END
+
+
+				bool run = false;
+
+				if ((glyco_info[10][0]==3) && (glyco_info[11][0]==1) && (glyco_info[6][0]==1) 
+					&& (glyco_info[7][0]==4) ) {run = true;}
+
+				if ((glyco_info[10][0]==1) && (glyco_info[11][0]==3) && (glyco_info[5][0]==0) 
+					&& (glyco_info[7][0]==4) ) {run = true;}
+
+				if ((glyco_info[10][0]==2) && (glyco_info[11][0]==1) && (glyco_info[5][0]==0) && (glyco_info[6][0]==1)
+					&& (glyco_info[7][0]==4) ) {run = true;}
+
+				if ((glyco_info[10][0]==1) && (glyco_info[11][0]==1) && (glyco_info[5][0]==0) && (glyco_info[6][0]==0)
+					&& (glyco_info[7][0]==4) ) {run = true;}
+
+				if ((glyco_info[10][0]==1) && (glyco_info[11][0]==2) && (glyco_info[5][0]==0) && (glyco_info[6][0]==0)
+					&& (glyco_info[7][0]==4) ) {run = true;}
+
+				if ((glyco_info[10][0]==1) && (glyco_info[11][0]==1) && (glyco_info[5][0]==0) && (glyco_info[6][0]==1)
+					&& (glyco_info[7][0]==4) ) {run = true;}
+
+				if ((glyco_info[10][0]==1) && (glyco_info[11][0]==1) && (glyco_info[5][0]==1) && (glyco_info[6][0]==1)
+					&& (glyco_info[7][0]==3) ) {run = true;}
+
+				if ((glyco_info[10][0]==1) && (glyco_info[11][0]==1) && (glyco_info[5][0]==1) && (glyco_info[6][0]==1)
+					&& (glyco_info[7][0]==4) ) {run = true;}
+
 				
-				if(sizet_ring1_conf[0]==0 || sizet_ring2_conf[0]==0)
+				if(run == false)
 				{VC_log<<"CHI energy penalties NOT applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum
-				<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<". ";}
-				
-				if(sizet_ring1_conf[0]==0 || sizet_ring2_conf[0]==0)
-				{std::cout<<"CHI energy penalties NOT applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname
+				<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<". ";
+				std::cout<<"CHI energy penalties NOT applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname
 				<<" "<<ligand_info[branch_atom1[h]-1].resnum<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<" ";}
 				
-				if(sizet_ring1_conf[0]!=0 && sizet_ring2_conf[0]!=0)
-				{VC_log<<"CHI energy penalties NOT applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum
-				<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<". ";}
-				
-				if(sizet_ring1_conf[0]!=0 && sizet_ring2_conf[0]!=0)
-				{std::cout<<"CHI energy penalties applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum
+				if(run == true)
+				{VC_log<<"CHI energy penalties applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum
+				<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<". ";
+				std::cout<<"CHI energy penalties applied to torsion in linkage b/w "<<ligand_info[branch_atom1[h]-1].resname<<" "<<ligand_info[branch_atom1[h]-1].resnum
 				<<" and "<<ligand_info[branch_atom2[h]-1].resname<<" "<<ligand_info[branch_atom2[h]-1].resnum<<" ";}
 
 				std::cout <<"| "<<get_ring_name(sizet_ring1_conf[0]) << " (" << get_anomeric_name(S1_AB[0]) << "1 - " << S2_Link[0] << 
 				get_axial_equitorial_name(S2_AE[0]) << ") "<<get_ring_name(sizet_ring2_conf[0]) << "\n";
 
 
-		//Co-ordinates START
-		glyco_info.push_back(S1_O5); //index 0
-		glyco_info.push_back(S1_C1); //index 1
-		glyco_info.push_back(S2_Ox); //index 2
-		glyco_info.push_back(S2_Cx); //index 3
-		glyco_info.push_back(S2_Cxm1); //index 4
-		//Co-ordinates END
-		glyco_info.push_back(S1_AB); //index 5
-		glyco_info.push_back(S2_AE); //index 6
-		glyco_info.push_back(S2_Link); //index 7 
-        glyco_info.push_back(S2_6AE); //index 8  //0 -> positive; 1-> negative
-        //Co-ordinates START
-    	glyco_info.push_back(S2_O5); //index 9 
-		glyco_info.push_back(sizet_ring1_conf); //index 10
-		glyco_info.push_back(sizet_ring2_conf); //index 11
-        //Co-ordinates END
-		ligand_glyco_info.push_back(glyco_info);
-		glyco_info.clear();
+				if (run) {
+				ligand_glyco_info.push_back(glyco_info);
+				glyco_info.clear();}
+		
 		}
 	}
 	}//end of for for branch atom size

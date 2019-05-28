@@ -283,6 +283,8 @@ inline fl vec_distance_sqr(const vec& a, const vec& b) {
 		   sqr(a[2] - b[2]);
 }
 
+
+
 inline fl sqr(const vec& v) {
 	return sqr(v[0]) + sqr(v[1]) + sqr(v[2]);
 }

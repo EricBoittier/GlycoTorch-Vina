@@ -44,10 +44,15 @@ struct parsed_atom : public atom_vc {
 	}
 };
 
+void parse_distance_ff(std::string str) ;
+
+
 model parse_receptor_pdbqt(const path& rigid, const path& flex); // can throw parse_error
 model parse_receptor_pdbqt(const path& rigid); // can throw parse_error
 model parse_ligand_pdbqt  (const path& name); // can throw parse_error
 std::vector<parsed_atom> liginfo_return(); //AKN
 std::vector< std::vector<size_t*> > glycan_info_func();
+std::vector< std::vector<double> > get_additional_ffs();
+
 #endif
 
