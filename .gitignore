@@ -1,4 +1,4 @@
 .vscode*
 .vs/
-autodock_vina_1_1_2\build
-autodock_vina_1_1_2\dependencies
+autodock_vina_1_1_2/build/
+autodock_vina_1_1_2/dependencies/

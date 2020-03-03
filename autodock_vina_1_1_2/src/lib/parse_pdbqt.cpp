@@ -38,7 +38,17 @@
 #include "file.h"
 #include "convert_substring.h"
 #include "parse_error.h"
-#include "glylib.h"
+#include "geometries.h"
+
+vectormag_3D get_crossprod(vectormag_3D a, vectormag_3D b) {
+	vectormag_3D xp;
+	xp.i = a.j * b.k - a.k * b.j;
+	xp.j = -(a.i * b.k - a.k * b.i);
+	xp.k = a.i * b.j - a.j * b.i;
+	xp.d = sqrt(xp.i * xp.i + xp.j * xp.j + xp.k * xp.k);
+	return xp;
+}
+
 
 
 coord_3D get_puckering_parm(coord_3D **r);
@@ -413,12 +423,28 @@ return 0;
 
 coord_3D get_puckering_parm(coord_3D **r){
 int n = 6;
-int jval[n];
+//int jval[n];
+std::vector <double> jval;
+jval.resize(n);
+
 int l;
-double z[n];
-double H1[n];
-double H2[n];
-double q[n];
+
+//double z[n];
+std::vector <double> z;
+z.resize(n);
+
+//double H1[n];
+std::vector <double> H1;
+H1.resize(n);
+
+//double H2[n];
+std::vector <double> H2;
+H2.resize(n);
+
+//double q[n];
+std::vector <double> q;
+q.resize(n);
+
 double m1=0.0;
 double n1=0.0;
 double q1=0.0;
@@ -435,7 +461,7 @@ for(l=0;l<n;l++){//for loop for calculating the Rj vals
 	Rj.i= r[l]->i;
 	Rj.j= r[l]->j;
 	Rj.k= r[l]->k;
-	Rsin.i = (Rj.i*sin(2*PI*(jval[l]-1)/n));
+	Rsin.i = (Rj.i*sinf(2*PI*(jval[l]-1)/n));
 	Rsin.j = (Rj.j*sin(2*PI*(jval[l]-1)/n));
 	Rsin.k = (Rj.k*sin(2*PI*(jval[l]-1)/n));
 	Rcos.i = (Rj.i*cos(2*PI*(jval[l]-1)/n));

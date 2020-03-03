@@ -131,7 +131,7 @@ void refine_structure(model& m, const precalculate& prec, non_cache& nc, output_
 	const fl slope_orig = nc.slope;
 	VINA_FOR(p, 5) {
 		nc.slope = 100 * std::pow(10.0, 2.0*p);
-		quasi_newton_par(m, prec, nc, out, g, cap,tmpq,chi_coeff,chi_cutoff);
+		quasi_newton_par(m, prec, nc, out, g, cap,0,chi_coeff,chi_cutoff); //tmpq == 0?
 		m.set(out.c); // just to be sure
 		if(nc.within(m))
 			{
@@ -301,7 +301,7 @@ void do_search(model& m, const boost::optional<model>& ref, const scoring_functi
 		auto end = std::chrono::system_clock::now();
     	std::chrono::duration<double> elapsed_seconds = end-start;
     	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-    	log << "finished computation at " << std::ctime(&end_time) << "elapsed time: " << elapsed_seconds.count() << "s\n";
+    	log << "elapsed time: " << elapsed_seconds.count() << "s\n";
 
 
 		if(how_many < 1) {

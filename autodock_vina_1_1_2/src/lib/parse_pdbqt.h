@@ -31,7 +31,6 @@
 
 #include "model.h"
 
-
 struct parsed_atom : public atom_vc {
 	unsigned number; 
 	std::string resname;

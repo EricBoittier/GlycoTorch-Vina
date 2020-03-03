@@ -155,6 +155,7 @@ void manifold::operator()(model& m, output_container& out, const precalculate& p
 	manifold tuning_par;
 	tuning_par.hunt_cap = authentic_v;
 	fl tmpq;
+	tmpq = 0.000;
 	fl corner2corner = 0.5 * (corner2 - corner1).norm();
 	conf_size s = m.get_size();
 	change g(s);

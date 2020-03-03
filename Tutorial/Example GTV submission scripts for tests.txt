@@ -1,0 +1,5 @@
+# Example GTV submission scripts for tests
+
+GlycoTorchVina.exe --receptor 2axm_Hs.pdbqt --ligand 2axm_ligand.pdbqt --config config.conf
+
+GlycoTorchVina.exe --receptor 1axm\1AXM_1_WithoutLigands.pdb.pdbqt --ligand 1axm\1AXM_LIGAND_1.pdbqt --config 1axm\1AXM_LIGAND_1.conf

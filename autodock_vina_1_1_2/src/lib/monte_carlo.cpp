@@ -49,6 +49,7 @@ void monte_carlo::single_run(model& m, output_type& out, const precalculate& p, 
 	conf_size s = m.get_size();
 	change g(s);
 	fl tmpq;
+	tmpq = 0.000;
 	vec authentic_v(1000, 1000, 1000);
 	out.e = max_fl;
 	output_type current(out);
@@ -87,6 +88,7 @@ output_type monte_carlo::many_runs(model& m, const precalculate& p, const igrid&
 
 void monte_carlo::operator()(model& m, output_container& out, const precalculate& p, const igrid& ig, const precalculate& p_widened, const igrid& ig_widened, const vec& corner1, const vec& corner2, incrementable* increment_me, rng& generator, const fl chi_coeff, const fl chi_cutoff) const {
 	fl tmpq;
+	tmpq = 0.000;
 	vec authentic_v(1000, 1000, 1000); // FIXME? this is here to avoid max_fl/max_fl
 	conf_size s = m.get_size();
 	change g(s);
